@@ -1,0 +1,37 @@
+backend:
+  name: github
+  repo: YOUR-GITHUB-USERNAME/YOUR-REPO-NAME
+  branch: main
+  # Netlify is only used for the GitHub login (OAuth), not for hosting
+  base_url: https://api.netlify.com
+  site_domain: YOUR-NETLIFY-SITE.netlify.app
+
+# Uncomment to edit content locally without logging in (run `npx decap-server` in the project folder)
+# local_backend: true
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "home"
+        label: "Home"
+        file: "content/home.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  - name: "products"
+    label: "Products"
+    folder: "content/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "title", widget: "string" }
+      - { label: "Price (SEK)", name: "price", widget: "number", value_type: "float", min: 0 }
+      - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Description", name: "body", widget: "markdown", required: false }
+      - { label: "Stripe Payment Link", name: "stripe_link", widget: "string", required: false }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
