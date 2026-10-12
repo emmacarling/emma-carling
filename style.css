@@ -1,0 +1,175 @@
+/* Layout only — visual styling comes later. */
+
+:root {
+  --gap: 10rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* Temporary colour blocks standing in for images */
+.placeholder {
+  background: #ccc;
+}
+.slide:nth-child(2) { background: #bbb; }
+.slide:nth-child(3) { background: #aaa; }
+
+
+/* ---------- Landing ---------- */
+
+.landing {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+}
+
+.landing-image {
+  position: absolute;
+  inset: 0;
+}
+
+.landing-title {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+/* ---------- Shop ---------- */
+
+.shop {
+  padding: var(--gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+}
+
+.feature-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+
+/* ---------- Product (image carousel) ---------- */
+
+.product {
+  position: relative;
+}
+
+.product-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  aspect-ratio: 3 / 4;
+  cursor: pointer;
+}
+.product-track::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+}
+.arrow.prev { left: 0.5rem; }
+.arrow.next { right: 0.5rem; }
+
+/* Show arrows on hover (and keyboard focus) */
+.product:hover .arrow,
+.product:focus-within .arrow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Touch screens have no hover — keep arrows visible */
+@media (hover: none) {
+  .product .arrow {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+
+/* ---------- Product overlay (full viewport) ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: #fff;
+}
+.overlay[hidden] {
+  display: none;
+}
+
+.overlay-track {
+  height: 100%;
+  aspect-ratio: auto;
+  cursor: default;
+}
+
+.overlay .arrow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlay-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+}
+
+.overlay-name {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  margin: 0;
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+
+/* ---------- Contact ---------- */
+
+.contact {
+  padding: var(--gap);
+}
+
+
+/* ---------- Smaller screens ---------- */
+
+@media (max-width: 1200px) {
+  :root { --gap: 4rem; }
+}
+
+@media (max-width: 700px) {
+  :root { --gap: 1.5rem; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+}
