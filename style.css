@@ -471,7 +471,7 @@ body.no-scroll {
 /* ---------- Smaller screens ---------- */
 
 @media (max-width: 1200px) {
-  :root { --gap: 3rem; }
+  :root { --gap: 2rem; }
   .overlay-info { padding: 5rem 2.5rem 3rem; }
   .order-image { width: 70%; }
 }

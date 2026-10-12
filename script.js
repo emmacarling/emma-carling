@@ -93,6 +93,7 @@ orderForm.addEventListener('submit', function (e) {
   const data = Object.fromEntries(new FormData(orderForm));
   data._subject = 'Order request: ' + data.product;
   data._template = 'table';
+  data._replyto = data.email; // Emma can hit "Reply" to answer the customer directly
 
   const button = orderForm.querySelector('button[type="submit"]');
   button.disabled = true;
