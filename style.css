@@ -121,9 +121,17 @@ body {
   inset: 0;
   z-index: 10;
   background: #fff;
+  display: grid;
+  grid-template-columns: 60% 40%;
 }
 .overlay[hidden] {
   display: none;
+}
+
+.overlay-gallery {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
 }
 
 .overlay-track {
@@ -137,18 +145,22 @@ body {
   pointer-events: auto;
 }
 
+.overlay-info {
+  height: 100vh;
+  height: 100svh;
+  overflow-y: auto;
+  padding: 4rem;
+}
+
+.order-button {
+  display: inline-block;
+}
+
 .overlay-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
   z-index: 1;
-}
-
-.overlay-name {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  margin: 0;
 }
 
 body.no-scroll {
@@ -172,4 +184,12 @@ body.no-scroll {
 @media (max-width: 700px) {
   :root { --gap: 1.5rem; }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Overlay: images on top, info underneath, whole overlay scrolls */
+  .overlay {
+    grid-template-columns: 100%;
+    overflow-y: auto;
+  }
+  .overlay-gallery { height: 70svh; }
+  .overlay-info { height: auto; overflow: visible; padding: 1.5rem; }
 }

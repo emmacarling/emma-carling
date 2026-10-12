@@ -19,15 +19,16 @@ document.querySelectorAll('.product').forEach(function (product) {
 
 const overlay = document.querySelector('.overlay');
 const overlayTrack = overlay.querySelector('.overlay-track');
-const overlayName = overlay.querySelector('.overlay-name');
+const overlayInfo = overlay.querySelector('.overlay-info');
 
 function openOverlay(product) {
   const track = product.querySelector('.product-track');
   const current = Math.round(track.scrollLeft / track.clientWidth);
 
-  // Copy the product's images into the overlay
+  // Copy the product's images and details into the overlay
   overlayTrack.innerHTML = track.innerHTML;
-  overlayName.textContent = product.querySelector('.product-name').textContent;
+  overlayInfo.innerHTML = product.querySelector('.product-info').innerHTML;
+  overlayInfo.scrollTop = 0;
 
   overlay.hidden = false;
   document.body.classList.add('no-scroll');
