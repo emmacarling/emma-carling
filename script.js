@@ -20,6 +20,12 @@ document.querySelectorAll('.product').forEach(function (product) {
   const track = product.querySelector('.product-track');
   markSingle(product, track);
 
+  // Show the price under the name in the grid (copied from the product's details)
+  const price = document.createElement('p');
+  price.className = 'grid-price';
+  price.textContent = product.querySelector('.product-price').textContent;
+  product.querySelector('.product-name').after(price);
+
   product.querySelector('.prev').addEventListener('click', function () { step(track, -1); });
   product.querySelector('.next').addEventListener('click', function () { step(track, 1); });
 
@@ -30,7 +36,7 @@ document.querySelectorAll('.product').forEach(function (product) {
 
 // Tapping the landing page scrolls down a bit, hinting at the shop below
 document.querySelector('.landing').addEventListener('click', function () {
-  window.scrollBy({ top: window.innerHeight * 0.50, behavior: 'smooth' });
+  window.scrollBy({ top: window.innerHeight * 0.60, behavior: 'smooth' });
 });
 
 
@@ -39,6 +45,7 @@ document.querySelector('.landing').addEventListener('click', function () {
 const overlay = document.querySelector('.overlay');
 const overlayTrack = overlay.querySelector('.overlay-track');
 const overlayInfo = overlay.querySelector('.overlay-info');
+const dots = overlay.querySelector('.dots');
 let currentProduct = null;
 
 function openOverlay(product) {
@@ -51,12 +58,34 @@ function openOverlay(product) {
   overlayInfo.innerHTML = product.querySelector('.product-info').innerHTML;
   markSingle(overlay, overlayTrack);
 
+  // One dot per image
+  dots.innerHTML = '';
+  overlayTrack.querySelectorAll('.slide').forEach(function (slide, i) {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', 'Image ' + (i + 1));
+    dot.addEventListener('click', function () {
+      overlayTrack.scrollTo({ left: i * overlayTrack.clientWidth, behavior: 'smooth' });
+    });
+    dots.appendChild(dot);
+  });
+
   overlay.hidden = false;
   document.body.classList.add('no-scroll');
 
   // Start on the same image the visitor was looking at
   overlayTrack.scrollLeft = current * overlayTrack.clientWidth;
+  updateDots();
 }
+
+// Highlight the dot of the image currently in view
+function updateDots() {
+  const current = Math.round(overlayTrack.scrollLeft / overlayTrack.clientWidth);
+  dots.querySelectorAll('button').forEach(function (dot, i) {
+    dot.classList.toggle('active', i === current);
+  });
+}
+overlayTrack.addEventListener('scroll', updateDots);
 
 function closeOverlay() {
   overlay.hidden = true;
@@ -99,6 +128,8 @@ function openOrder(product) {
 
   orderView.querySelector('.order-summary-name').textContent = name;
   orderView.querySelector('.order-summary-price').textContent = price;
+  orderView.querySelector('.order-product-name').textContent = name;
+  orderView.querySelector('.order-product-price').textContent = price;
 
   orderForm.reset();
   orderForm.elements.product.value = name;

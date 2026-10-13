@@ -1,17 +1,20 @@
 :root {
-  --gap: 2rem;
+  --gap: 0.7rem;
+  /* Space above images in the product view and form: same as --gap,
+     but never less than 4.5rem so the X / Back buttons fit above it */
+  --top: max(var(--gap), 4.5rem);
 
   /* The whole palette: white + 3 greys */
   --white: #ffffff;
-  --grey-dark: #1a1a1a;
-  --grey-mid: #3a3a3a;
-  --grey-light: #c2c2c2;
+  --grey-dark: #4d1017;
+  --grey-mid: #eff4bc;
+  --grey-light: #f3f2f2;
 
   /* What each colour is used for */
   --bg: var(--white);
   --text: var(--grey-dark);
   --muted: var(--grey-light);
-  --line: var(--grey-mid);
+  --line: var(--grey-dark);
   --surface: var(--grey-light);
   --button: var(--grey-light);
 
@@ -100,7 +103,11 @@ button {
   width: min(80vw, 40rem);
   height: auto;
 }
-
+.introtext {
+  text-align: center;
+  font-size: 1.125rem;
+ 
+}
 
 /* ---------- Shop ---------- */
 
@@ -117,10 +124,13 @@ button {
   gap: var(--gap);
 }
 
+/* Full width, natural height, but never taller than 80% of the screen
+   (if it would be, it's cropped top and bottom instead of squashed) */
 .feature-image {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: 80vh;
   object-fit: cover;
 }
 
@@ -155,7 +165,7 @@ button {
 }
 
 .product-name {
-  margin: 0.9rem 0 0;
+  margin: 0.35rem 0 0;
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -171,7 +181,6 @@ button {
   border: none;
   background: none;
   color: var(--grey-dark);
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6)); /* stays visible on dark photos */
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
@@ -194,8 +203,40 @@ button {
 .arrow.next { right: 0.5rem; }
 
 /* Only one image: nothing to scroll, so no arrows */
-.single .arrow {
+.single .arrow,
+.single .dots {
   display: none;
+}
+
+/* Touch screens: no arrows at all, just swipe. (Arrows that appear on
+   "hover" made phones need two taps to open a product.) */
+@media (hover: none) {
+  .arrow {
+    display: none;
+  }
+}
+
+/* Dots showing how many images there are, and which one is in view */
+.dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.25rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.dots button {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: 1px solid var(--white);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+.dots button.active {
+  background: var(--white);
 }
 
 /* Arrows sit in the middle of the image, not the image + name */
@@ -222,20 +263,24 @@ button {
   z-index: 10;
   background: var(--bg);
   display: grid;
-  grid-template-columns: 400px 1fr; /* info column has a fixed width */
+  grid-template-columns: 1fr 400px; /* image left, info column fixed width */
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: var(--gap);
+  /* Same distance from the screen edge as the shop grid */
+  padding: var(--top) var(--gap) var(--gap);
 }
 .overlay[hidden] {
   display: none;
 }
 
-/* Image is full screen height; its width follows the photo's shape (3:4) */
+/* Image fills the height (minus the margins); its width follows the photo's shape (3:4) */
 .overlay-gallery {
   position: relative;
-  height: 100vh;
-  height: 100svh;
+  order: -1; /* image first, on the left */
+  height: 100%;
   aspect-ratio: 3 / 4;
   max-width: 100%;
-  justify-self: end; /* sit against the right edge */
+  justify-self: start;
 }
 
 .overlay-track {
@@ -249,11 +294,16 @@ button {
   height: 2.75rem;
 }
 
+/* Info column: title etc. at the top, Order button at the bottom */
 .overlay-info {
-  height: 100vh;
-  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow-y: auto;
-  padding: 6rem 4rem 4rem;
+}
+.overlay-info .order-button {
+  margin-top: auto;
+  padding: 0.7rem;
 }
 
 .product-title {
@@ -352,7 +402,7 @@ button {
   align-items: stretch;
   align-content: start; /* don't stretch the row to fill a tall window */
   gap: var(--gap);
-  padding: 6rem var(--gap) var(--gap);
+  padding: var(--top) var(--gap) var(--gap);
 }
 
 /* Left column: image on top, terms box pushed down so its bottom
@@ -424,7 +474,7 @@ button {
   padding: 2rem;
   border: 1px solid var(--line);
   font-size: 0.8125rem;
-  color: var(--muted);
+  color: var(--line);
 }
 .order-terms h3 {
   margin: 0 0 0.5rem;
@@ -451,11 +501,16 @@ button {
   margin-top: auto;
 }
 
-.order-form h2 {
-  margin: 0 0 2rem;
-  font-weight: 400;
-  font-size: 2.5rem;
-  line-height: 1.1;
+.order-product {
+  margin-bottom: 2.5rem;
+}
+
+.order-heading {
+  margin: 0 0 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .field {
@@ -481,7 +536,6 @@ button {
 .field textarea {
   width: 100%;
   padding: 0.8rem 0.9rem;
-  border: 1px solid var(--line);
   border-radius: 0;
   background: var(--surface);
   color: var(--text);
@@ -489,12 +543,11 @@ button {
 }
 .field input[readonly] {
   background: transparent;
-  color: var(--muted);
+  color: var(--text);
 }
 .field input:focus,
 .field textarea:focus {
   outline: none;
-  border-color: var(--text);
 }
 .field textarea {
   resize: vertical;
@@ -521,8 +574,8 @@ button {
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
-  border: 1px solid var(--line);
   font-size: 0.8125rem;
+  background: var(--surface);
   transition: border-color 0.2s;
 }
 .option:hover span {
@@ -605,7 +658,6 @@ body.no-scroll {
 
 @media (max-width: 1200px) {
   :root { --gap: 2rem; }
-  .overlay-info { padding: 5rem 2.5rem 3rem; }
 }
 
 @media (max-width: 700px) {
@@ -615,16 +667,22 @@ body.no-scroll {
   /* Overlay: images on top, info underneath, whole overlay scrolls */
   .overlay {
     grid-template-columns: 100%;
+    grid-template-rows: auto;
     overflow-y: auto;
+    padding: var(--gap);
   }
-  .overlay-gallery { height: 70svh; }
-  .overlay-info { height: auto; overflow: visible; padding: 2rem 1.5rem 3rem; }
+  .overlay-gallery { height: auto; }
+  .overlay-track { height: 70svh; }
+  /* Mobile: dots sit under the image */
+  .dots { position: static; padding-top: 1rem; }
+  .overlay-info { height: auto; overflow: visible; padding: 2rem 0 1.5rem; }
+  .overlay-info .order-button { margin-top: 0; }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
   /* On mobile the X sits in the top right corner, over the image */
   .overlay .overlay-close {
     left: auto;
-    right: 0.75rem;
-    top: 0.75rem;
+    right: calc(var(--gap) + 0.25rem);
+    top: calc(var(--gap) + 0.25rem);
     color: var(--grey-dark);
     filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
   }
@@ -632,8 +690,8 @@ body.no-scroll {
 
   .order-view {
     grid-template-columns: 100%;
-    padding-top: 4.5rem;
   }
+  .order-product { display: none; }
   .order-back { top: 1.25rem; }
 
   /* Form: small thumbnail with name and price beside it */

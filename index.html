@@ -18,6 +18,7 @@
 
   <!-- SHOP -->
   <main class="shop" id="shop">
+    <p class="introtext">all items are made to order</p>
 
     <section class="product-grid">
       <article class="product">
@@ -290,6 +291,7 @@ All items are handcrafted in her atelier in Stockholm, Sweden</p>
     <div class="overlay-info"></div>
     <div class="overlay-gallery">
       <div class="product-track overlay-track"></div>
+      <div class="dots"></div>
       <button class="arrow prev" aria-label="Previous image"></button>
       <button class="arrow next" aria-label="Next image"></button>
     </div>
@@ -318,7 +320,13 @@ All items are handcrafted in her atelier in Stockholm, Sweden</p>
     </div>
 
     <form class="order-form">
-      <h2>Order request</h2>
+      <!-- Same title + price as the product view (desktop only; mobile shows them next to the thumbnail) -->
+      <div class="order-product">
+        <h2 class="product-title order-product-name"></h2>
+        <p class="product-price order-product-price"></p>
+      </div>
+
+      <h3 class="order-heading">Order request</h3>
 
       <label class="field">
         <span>Full name</span>
