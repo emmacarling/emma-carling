@@ -1,21 +1,36 @@
 // Order requests are emailed here (via formsubmit.co)
 const ORDER_EMAIL = '63460f1740cce258d377d960881792c9';
 
+// Shown to customers if sending fails (taken from the footer's email link)
+const CONTACT_EMAIL = document.querySelector('.contact a[href^="mailto:"]').textContent;
+
 
 // Scroll a track one image left (-1) or right (+1)
 function step(track, dir) {
   track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
 }
 
+// Hide the arrows when there is only one image to show
+function markSingle(container, track) {
+  container.classList.toggle('single', track.querySelectorAll('.slide').length < 2);
+}
+
 // Arrows inside each product
 document.querySelectorAll('.product').forEach(function (product) {
   const track = product.querySelector('.product-track');
+  markSingle(product, track);
 
   product.querySelector('.prev').addEventListener('click', function () { step(track, -1); });
   product.querySelector('.next').addEventListener('click', function () { step(track, 1); });
 
   // Clicking the image itself opens the product full screen
   track.addEventListener('click', function () { openOverlay(product); });
+});
+
+
+// Tapping the landing page scrolls down a bit, hinting at the shop below
+document.querySelector('.landing').addEventListener('click', function () {
+  window.scrollBy({ top: window.innerHeight * 0.50, behavior: 'smooth' });
 });
 
 
@@ -34,6 +49,7 @@ function openOverlay(product) {
   // Copy the product's images and details into the overlay
   overlayTrack.innerHTML = track.innerHTML;
   overlayInfo.innerHTML = product.querySelector('.product-info').innerHTML;
+  markSingle(overlay, overlayTrack);
 
   overlay.hidden = false;
   document.body.classList.add('no-scroll');
@@ -63,6 +79,15 @@ const orderView = document.querySelector('.order-view');
 const orderForm = orderView.querySelector('.order-form');
 const orderImage = orderView.querySelector('.order-image');
 const formStatus = orderView.querySelector('.form-status');
+const otherHint = orderView.querySelector('.other-hint');
+
+// "Other" colour: show the hint and make the message required
+function updateOther() {
+  const isOther = orderForm.elements.colour.value === 'Other (see message)';
+  otherHint.hidden = !isOther;
+  orderForm.elements.message.required = isOther;
+}
+orderForm.addEventListener('change', updateOther);
 
 function openOrder(product) {
   const name = product.querySelector('.product-title').textContent;
@@ -72,10 +97,14 @@ function openOrder(product) {
   orderImage.innerHTML = '';
   orderImage.appendChild(product.querySelector('.slide').cloneNode(true));
 
+  orderView.querySelector('.order-summary-name').textContent = name;
+  orderView.querySelector('.order-summary-price').textContent = price;
+
   orderForm.reset();
   orderForm.elements.product.value = name;
   orderForm.elements.price.value = price;
   formStatus.textContent = '';
+  updateOther();
 
   orderView.hidden = false;
   orderView.scrollTop = 0;
@@ -111,9 +140,10 @@ orderForm.addEventListener('submit', function (e) {
       orderForm.reset();
       orderForm.elements.product.value = data.product;
       orderForm.elements.price.value = data.price;
+      updateOther();
     })
     .catch(function () {
-      formStatus.textContent = 'Something went wrong. Please try again, or email ' + ORDER_EMAIL + ' directly.';
+      formStatus.textContent = 'Something went wrong. Please try again, or email ' + CONTACT_EMAIL + ' directly.';
     })
     .finally(function () {
       button.disabled = false;

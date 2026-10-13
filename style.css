@@ -57,10 +57,14 @@ button {
 
 /* ---------- Landing ---------- */
 
+/* Full screen, including behind the iPhone notch and the browser bars.
+   lvh = the screen height when the browser bars are hidden, so the video
+   never leaves a gap. object-fit: cover crops the sides, never stretches. */
 .landing {
   position: relative;
   height: 100vh;
-  height: 100svh;
+  height: 100lvh;
+  cursor: pointer;
 }
 
 .landing-image {
@@ -69,7 +73,10 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center; /* crop equally top/bottom and left/right */
+  /* Crop a bit more from the top than the bottom, so on wide screens
+     you see from just above the head down to the ankles.
+     Lower % = show more of the top, higher % = show more of the bottom. */
+  object-position: center 58%;
 }
 
 .landing-title {
@@ -77,13 +84,21 @@ button {
   inset: 0;
   margin: 0;
   display: flex;
-  align-items: top;
+  align-items: flex-start; /* logo at the top */
   justify-content: center;
+  padding-top: calc(2rem + env(safe-area-inset-top)); /* clear of the notch */
   text-align: center;
   font-weight: 400;
   font-size: clamp(3rem, 9vw, 8rem);
   letter-spacing: 0.02em;
   color: #fff79f; /* same yellow as the form's Yellow option */
+}
+
+/* Logo colour is set inside svg/EmmaCarling.svg (fill="...") */
+.landing-logo {
+  display: block;
+  width: min(80vw, 40rem);
+  height: auto;
 }
 
 
@@ -152,21 +167,36 @@ button {
   transform: translateY(-50%);
   width: 2.25rem;
   height: 2.25rem;
+  padding: 0;
   border: none;
-  border-radius: 50%;
-  background: var(--button);
-  font-size: 0.9rem;
-  line-height: 1;
+  background: none;
+  color: var(--grey-dark);
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6)); /* stays visible on dark photos */
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s, background 0.2s;
+  transition: opacity 0.2s;
 }
-.arrow:hover {
-  background: var(--grey-mid);
+/* The V shape: two borders of a small square, rotated */
+.arrow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 35%;
+  height: 35%;
+  border-left: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
 }
-.arrow.prev { left: 0.75rem; }
-.arrow.next { right: 0.75rem; }
+.arrow.prev::before { transform: translate(-30%, -50%) rotate(45deg); }
+.arrow.next::before { transform: translate(-70%, -50%) rotate(-135deg); }
+.arrow.prev { left: 0.5rem; }
+.arrow.next { right: 0.5rem; }
+
+/* Only one image: nothing to scroll, so no arrows */
+.single .arrow {
+  display: none;
+}
 
 /* Arrows sit in the middle of the image, not the image + name */
 .product .arrow {
@@ -174,18 +204,13 @@ button {
 }
 
 /* Show arrows on hover (and keyboard focus) */
+/* Arrows only show while hovering the images
+   (or when reached with the keyboard's Tab key) */
 .product:hover .arrow,
-.product:focus-within .arrow {
+.overlay-gallery:hover .arrow,
+.arrow:focus-visible {
   opacity: 1;
   pointer-events: auto;
-}
-
-/* Touch screens have no hover — keep arrows visible */
-@media (hover: none) {
-  .product .arrow {
-    opacity: 1;
-    pointer-events: auto;
-  }
 }
 
 
@@ -197,16 +222,20 @@ button {
   z-index: 10;
   background: var(--bg);
   display: grid;
-  grid-template-columns: 40% 60%;
+  grid-template-columns: 400px 1fr; /* info column has a fixed width */
 }
 .overlay[hidden] {
   display: none;
 }
 
+/* Image is full screen height; its width follows the photo's shape (3:4) */
 .overlay-gallery {
   position: relative;
   height: 100vh;
   height: 100svh;
+  aspect-ratio: 3 / 4;
+  max-width: 100%;
+  justify-self: end; /* sit against the right edge */
 }
 
 .overlay-track {
@@ -216,8 +245,6 @@ button {
 }
 
 .overlay .arrow {
-  opacity: 1;
-  pointer-events: auto;
   width: 2.75rem;
   height: 2.75rem;
 }
@@ -267,6 +294,30 @@ button {
   cursor: default;
 }
 
+/* Close: a thin X in the top left corner */
+.overlay .overlay-close {
+  left: 1.5rem;
+  right: auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+}
+.overlay .overlay-close::before,
+.overlay .overlay-close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.4rem;
+  height: 1.5px;
+  background: currentColor;
+}
+.overlay .overlay-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.overlay .overlay-close::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+.overlay .overlay-close:hover { opacity: 0.6; }
+
 .overlay-close,
 .order-back {
   position: absolute;
@@ -298,9 +349,30 @@ button {
   background: var(--bg);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: start;
+  align-items: stretch;
+  align-content: start; /* don't stretch the row to fill a tall window */
   gap: var(--gap);
   padding: 6rem var(--gap) var(--gap);
+}
+
+/* Left column: image on top, terms box pushed down so its bottom
+   lines up with the Send request button */
+.order-left {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop: the left column takes its height from the form on the right,
+   so the image can never push the info box down */
+@media (min-width: 701px) {
+  .order-left {
+    contain: size; /* ignore its own content when sizing the row */
+  }
+}
+
+/* Name + price next to the thumbnail — only shown on mobile */
+.order-summary-text {
+  display: none;
 }
 .order-view[hidden] {
   display: none;
@@ -322,8 +394,33 @@ button {
   flex: 1;
 }
 
+/* Desktop: the image fills the space above the info box (with the same
+   gap as between the two columns) and its width follows from its height */
+@media (min-width: 701px) {
+  .order-summary {
+    display: flex;
+    flex: 1 1 0;
+    min-height: 0;
+    margin-bottom: var(--gap);
+  }
+  .order-image {
+    position: relative;
+    flex: 1;
+    width: auto;
+    aspect-ratio: auto;
+  }
+  .order-image .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+  }
+}
+
 .order-terms {
-  margin-top: 2.5rem;
+  margin-top: auto;
   padding: 2rem;
   border: 1px solid var(--line);
   font-size: 0.8125rem;
@@ -344,6 +441,16 @@ button {
   margin-bottom: 0;
 }
 
+/* Send request button sits at the bottom of the column,
+   level with the bottom of the info box */
+.order-form {
+  display: flex;
+  flex-direction: column;
+}
+.order-form button[type="submit"] {
+  margin-top: auto;
+}
+
 .order-form h2 {
   margin: 0 0 2rem;
   font-weight: 400;
@@ -352,6 +459,7 @@ button {
 }
 
 .field {
+  position: relative;
   display: block;
   margin: 0 0 1.75rem;
   padding: 0;
@@ -437,12 +545,27 @@ button {
 
 /* "Other" colour: a rainbow colour wheel */
 .swatch i.rainbow {
-  background: conic-gradient(red, orange, yellow, lime, cyan, blue, magenta, red);
+  background: linear-gradient(45deg,
+    #e8473f 0 16.6%, #ec9831 0 33.3%, #f4dd4c 0 50%,
+    #4ecb5f 0 66.6%, #5ea9ff 0 83.3%, #9a5bd6 0);
+}
+
+/* Floats in the space under the field, so it never moves the layout */
+.field-hint {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 0.3rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
 }
 
 .form-status {
   margin: 1rem 0 0;
   font-size: 0.8125rem;
+}
+.form-status:empty {
+  display: none;
 }
 
 body.no-scroll {
@@ -456,11 +579,21 @@ body.no-scroll {
   margin: 0 var(--gap);
   padding: 3rem 0 4rem;
   border-top: 1px solid var(--line);
+  font-size: 0.8125rem;
+}
+
+.contact .contact-intro {
+  max-width: 36rem;
+  margin: 0 0 3rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.contact-info {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem 2rem;
-  font-size: 0.8125rem;
 }
 
 .contact p {
@@ -473,7 +606,6 @@ body.no-scroll {
 @media (max-width: 1200px) {
   :root { --gap: 2rem; }
   .overlay-info { padding: 5rem 2.5rem 3rem; }
-  .order-image { width: 70%; }
 }
 
 @media (max-width: 700px) {
@@ -487,7 +619,15 @@ body.no-scroll {
   }
   .overlay-gallery { height: 70svh; }
   .overlay-info { height: auto; overflow: visible; padding: 2rem 1.5rem 3rem; }
-  .overlay-close { right: 1.25rem; }
+  .overlay-gallery { width: 100%; aspect-ratio: auto; }
+  /* On mobile the X sits in the top right corner, over the image */
+  .overlay .overlay-close {
+    left: auto;
+    right: 0.75rem;
+    top: 0.75rem;
+    color: var(--grey-dark);
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+  }
   .overlay-gallery { order: -1; }
 
   .order-view {
@@ -495,6 +635,19 @@ body.no-scroll {
     padding-top: 4.5rem;
   }
   .order-back { top: 1.25rem; }
+
+  /* Form: small thumbnail with name and price beside it */
+  .order-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .order-image { width: 5rem; flex: none; }
+  .order-summary-text { display: block; }
+  .order-summary-text p { margin: 0; }
+  .order-summary-name { font-size: 1.125rem; }
+  .order-summary-price { color: var(--muted); }
+  .order-terms { margin-top: 1.5rem; padding: 1.25rem; }
 
   /* Smaller buttons on mobile */
   .arrow,
@@ -506,7 +659,6 @@ body.no-scroll {
   .arrow.prev { left: 0.5rem; }
   .arrow.next { right: 0.5rem; }
 
-  .overlay-close,
   .order-back {
     padding: 0.3rem 0.6rem;
     font-size: 0.625rem;
@@ -522,5 +674,5 @@ body.no-scroll {
     font-size: 0.75rem;
   }
 
-  .contact { flex-direction: column; }
+  .contact-info { flex-direction: column; }
 }
