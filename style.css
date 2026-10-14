@@ -126,12 +126,27 @@ button {
   display: none;
 }
 
+/* Feature slide: the first slide sets the height, the others lie on top
+   of it, and the active one fades in */
+.feature {
+  position: relative;
+}
 .feature-image {
   display: block;
   width: 100%;
   height: auto;
   max-height: 80vh;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.2s ease; /* fade duration */
+}
+.feature-image + .feature-image {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+.feature-image.active {
+  opacity: 1;
 }
 
 
@@ -226,6 +241,25 @@ button {
   .arrow {
     display: none;
   }
+  /* Product view: arrows and dots show how many images there are,
+     but you swipe to change image */
+  .overlay:not(.single) .arrow {
+    display: block;
+    opacity: 1;
+  }
+  .overlay .arrow,
+  .dots button {
+    pointer-events: none;
+  }
+}
+
+/* Never show the browser's own play button / controls on the
+   background videos (iPhone shows one while loading or in Low Power Mode) */
+video::-webkit-media-controls,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
 }
 
 /* Dots showing how many images there are, and which one is in view */
@@ -334,6 +368,7 @@ button {
 .product-material {
   margin: 0.25rem 0 2.5rem;
   color: var(--grey-light);
+  white-space: pre-line; /* line breaks typed in the CMS show as new lines */
 }
 
 .order-button {
@@ -686,7 +721,7 @@ body.no-scroll {
 }
 
 @media (max-width: 700px) {
-  :root { --gap: 1.5rem; }
+  :root { --gap: 0.7rem; }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
 
   /* Overlay: images on top, info underneath, whole overlay scrolls */
@@ -698,8 +733,6 @@ body.no-scroll {
   }
   .overlay-gallery { height: auto; }
   .overlay-track { height: 70svh; }
-  /* Mobile: dots sit under the image */
-  .dots { position: static; padding-top: 1rem; }
   .overlay-info { height: auto; overflow: visible; padding: 2rem 0 1.5rem; }
   .overlay-info .order-button { margin-top: 0; }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
@@ -760,4 +793,5 @@ body.no-scroll {
   .contact-info { flex-direction: column; }
 
   .grid-price { display: none; }
+  .product-meta { padding: 0; } /* name all the way to the left */
 }

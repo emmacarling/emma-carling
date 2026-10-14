@@ -1,3 +1,6 @@
 {
-  "media": "/img/Landingpage.jpeg"
+  "slides": [
+    "/img/Landingpage.jpeg"
+  ],
+  "seconds": 4
 }

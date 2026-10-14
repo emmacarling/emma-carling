@@ -5,117 +5,87 @@ backend:
   # Netlify is only used for the GitHub login (OAuth), not for hosting
   base_url: https://api.netlify.com
   site_domain: emmacarlingcms.netlify.app
-  commit_messages:
-    update: "Update {{collection}}: {{path}}"
-    uploadMedia: "Upload {{path}}"
-    deleteMedia: "Delete {{path}}"
 
 # Edit content locally without logging in: run `npx decap-server` in the project
-# folder, then open http://localhost:8000/admin/ (only used on localhost)
+# folder, then open http://localhost:8080/admin/ (only used on localhost)
 local_backend: true
-
-site_url: https://emmacarling.com
-display_url: https://emmacarling.com
-logo_url: /SVG/EmmaCarling.svg
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
-
-# The preview on the right of each editor is set up in admin/preview.js
 
 collections:
 
   # ---------- Products ----------
   - name: "shop"
-    label: "Products"
-    description: "Add, edit, reorder or remove products in the shop."
+    label: "Shop"
     files:
       - name: "products"
-        label: "All products"
+        label: "Products"
         file: "content/products.json"
         fields:
           - label: "Products"
             name: "products"
             widget: "list"
             label_singular: "product"
-            collapsed: true
-            summary: "{{fields.name}}  ·  {{fields.price}} SEK"
-            hint: "Click a product to edit it. Drag ☰ to change the order. The first 8 are shown above the featured image, the rest below it."
+            summary: "{{fields.name}} – {{fields.price}} SEK"
+            hint: "Drag to change the order. The first 8 are shown above the featured image, the rest below it."
             fields:
               - { label: "Name", name: "name", widget: "string" }
-              - { label: "Price (SEK)", name: "price", widget: "number", value_type: "int", min: 0, hint: "Just the number, e.g. 1200" }
-              - { label: "Material", name: "material", widget: "string", required: false, hint: "e.g. 100% organic cotton" }
+              - { label: "Price (SEK)", name: "price", widget: "number", value_type: "int", min: 0 }
+              - { label: "Material", name: "material", widget: "text", required: false, hint: "Press Enter for a new line." }
               - label: "Sizes"
                 name: "sizing"
                 widget: "select"
                 default: "two"
-                hint: "Decides which sizes customers can pick in the order form."
                 options:
-                  - { label: "Two sizes: Small / Medium and Large / X-Large", value: "two" }
+                  - { label: "Two sizes (Small / Medium and Large / X-Large)", value: "two" }
                   - { label: "One size", value: "one" }
-              - label: "Photos"
+              - label: "Images"
                 name: "images"
                 widget: "list"
-                label_singular: "photo"
-                min: 1
-                collapsed: false
-                hint: "The first photo is the one shown in the shop. Drag ☰ to change the order. Portrait photos (3:4) look best."
-                field: { label: "Photo", name: "image", widget: "image", choose_url: false }
+                label_singular: "image"
+                hint: "The first image is shown in the grid. Drag to change the order."
+                field: { label: "Image", name: "image", widget: "image" }
 
-  # ---------- Front page ----------
-  - name: "front"
-    label: "Front page"
-    description: "The big video or image at the top, and the featured image between the products."
+  # ---------- Everything else ----------
+  - name: "settings"
+    label: "Site settings"
     files:
       - name: "landing"
-        label: "Top of the page (video or image)"
+        label: "Landing page"
         file: "content/landing.json"
         fields:
-          - label: "Video or image"
+          - label: "Image or video"
             name: "media"
             widget: "file"
-            choose_url: false
-            hint: "Fills the whole first screen. Videos must be .mp4 – they play on repeat without sound. Keep videos short and small (under ~10 MB)."
-          - label: "Still image (only for video)"
+            hint: "Fills the whole first screen. For video, use an .mp4 file (plays muted and on repeat)."
+          - label: "Still image while the video loads"
             name: "poster"
             widget: "image"
             required: false
-            choose_url: false
-            hint: "Shown while the video loads, and on phones that block autoplay. A screenshot from the video works well."
+            hint: "Only used with a video. Also shown on phones in low-power mode."
 
       - name: "feature"
-        label: "Featured image between the products"
+        label: "Feature slide (between the product grids)"
         file: "content/feature.json"
         fields:
-          - label: "Video or image"
-            name: "media"
-            widget: "file"
-            required: false
-            choose_url: false
-            hint: "Shown full width between the two product grids. Videos must be .mp4. Leave empty to hide it."
-
-  # ---------- Order form ----------
-  - name: "order"
-    label: "Order form"
-    description: "The colour choices and the info box customers see when they order."
-    files:
-      - name: "colours"
-        label: "Colour choices"
-        file: "content/colours.json"
-        fields:
-          - label: "Colours"
-            name: "colours"
+          - label: "Slides"
+            name: "slides"
             widget: "list"
-            label_singular: "colour"
-            collapsed: true
-            summary: "{{fields.name}}"
-            hint: "Customers pick one of these. The rainbow \"Other\" choice is always added at the end automatically."
-            fields:
-              - { label: "Name", name: "name", widget: "string", hint: "e.g. Blue" }
-              - { label: "Colour", name: "color", widget: "color", hint: "Click to pick the colour shown as a dot next to the name." }
+            label_singular: "slide"
+            required: false
+            hint: "Images or .mp4 videos. They fade from one to the next in a loop. Drag to change the order. With one slide it just stays put; with none, the section is hidden."
+            field: { label: "Image or video", name: "media", widget: "file" }
+          - label: "Seconds per slide"
+            name: "seconds"
+            widget: "number"
+            value_type: "float"
+            min: 1
+            default: 4
+            required: false
 
       - name: "order-info"
-        label: "Info box (ordering & refunds)"
+        label: "Order & refund info box"
         file: "content/order-info.json"
         fields:
           - { label: "First heading", name: "heading1", widget: "string" }
@@ -123,21 +93,30 @@ collections:
           - { label: "Second heading", name: "heading2", widget: "string" }
           - { label: "Second text", name: "text2", widget: "text" }
 
-  # ---------- Footer ----------
-  - name: "footer"
-    label: "About & contact"
-    description: "The text about Emma and the contact details at the bottom of the page."
-    files:
+      - name: "colours"
+        label: "Colour options"
+        file: "content/colours.json"
+        fields:
+          - label: "Colours"
+            name: "colours"
+            widget: "list"
+            label_singular: "colour"
+            summary: "{{fields.name}}"
+            hint: "Shown in the order form. \"Other\" is always added at the end automatically."
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Colour", name: "color", widget: "color" }
+
       - name: "about"
-        label: "About text"
+        label: "Footer text"
         file: "content/about.json"
         fields:
-          - { label: "About Emma", name: "text", widget: "text", hint: "Leave an empty line to start a new paragraph." }
+          - { label: "Text about Emma", name: "text", widget: "text", hint: "Empty lines start a new paragraph." }
 
       - name: "contact"
-        label: "Contact details"
+        label: "Contact info"
         file: "content/contact.json"
         fields:
           - { label: "Email", name: "email", widget: "string", hint: "Also shown to customers if sending an order fails." }
-          - { label: "Phone", name: "phone", widget: "string", required: false, hint: "Leave empty to hide." }
-          - { label: "Instagram", name: "instagram", widget: "string", required: false, hint: "Just the name, without @ – e.g. emmacarling. Leave empty to hide." }
+          - { label: "Phone", name: "phone", widget: "string", required: false }
+          - { label: "Instagram handle", name: "instagram", widget: "string", required: false, hint: "Without the @, e.g. emmacarling" }

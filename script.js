@@ -2,7 +2,7 @@
 const ORDER_EMAIL = '63460f1740cce258d377d960881792c9';
 
 // Shown to customers if sending fails (set from content/contact.json)
-let CONTACT_EMAIL = '';
+let CONTACT_EMAIL = 'emmacarling@hotmail.com';
 
 // How many products go above the featured image
 const PRODUCTS_ABOVE_FEATURE = 8;
@@ -55,10 +55,18 @@ function isVideo(src) {
 function mediaElement(src, className, alt, poster) {
   if (isVideo(src)) {
     const video = el('video', className);
-    video.src = src;
-    video.autoplay = video.muted = video.loop = video.playsInline = true;
+    // Muted must be set (as attribute too) before the source, or iPhones
+    // refuse to autoplay and show a play button instead
+    video.muted = video.defaultMuted = true;
+    video.setAttribute('muted', '');
     video.setAttribute('playsinline', '');
+    video.setAttribute('autoplay', '');
+    video.setAttribute('loop', '');
+    video.autoplay = video.loop = video.playsInline = true;
     if (poster) video.poster = poster;
+    video.src = src;
+    const play = video.play();
+    if (play) play.catch(function () {}); // e.g. Low Power Mode: just show the still image
     return video;
   }
   const img = el('img', className);
@@ -122,11 +130,28 @@ function renderLanding(c) {
   if (c.media) placeholder.replaceWith(mediaElement(c.media, 'landing-image', '', c.poster));
 }
 
+// Feature slide: the images/videos fade into each other in a loop
 function renderFeature(c) {
   const feature = document.querySelector('.feature');
+  const slides = (c.slides || (c.media ? [c.media] : [])).filter(Boolean);
+  const seconds = Number(c.seconds) || 4;
+
   feature.innerHTML = '';
-  if (c.media) feature.appendChild(mediaElement(c.media, 'feature-image', ''));
-  feature.hidden = !c.media;
+  feature.hidden = !slides.length;
+  slides.forEach(function (src, i) {
+    const slide = mediaElement(src, 'feature-image', '');
+    if (i === 0) slide.classList.add('active');
+    feature.appendChild(slide);
+  });
+
+  if (slides.length < 2) return;
+  let current = 0;
+  setInterval(function () {
+    const items = feature.children;
+    items[current].classList.remove('active');
+    current = (current + 1) % items.length;
+    items[current].classList.add('active');
+  }, seconds * 1000);
 }
 
 function renderOrderInfo(c) {
