@@ -10,9 +10,8 @@
 
   <!-- LANDING -->
   <header class="landing">
-    <video class="landing-image" autoplay muted loop playsinline poster="img/Landingpage.jpeg">
-      <source src="img/Landingpage.mp4" type="video/mp4">
-    </video>
+    <!-- Image or video from content/landing.json -->
+    <div class="landing-media"></div>
     <h1 class="landing-title"><img class="landing-logo" src="SVG/EmmaCarling.svg" alt="Emma Carling"></h1>
   </header>
 
@@ -20,268 +19,25 @@
   <main class="shop" id="shop">
     <p class="introtext">all items are made to order</p>
 
-    <section class="product-grid">
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress1.jpeg" alt="Rio skirt">
-          <img class="slide" src="img/dress2.jpeg" alt="Rio skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rio skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rio skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress2.jpeg" alt="Lova dress">
-          <img class="slide" src="img/dress1.jpeg" alt="Lova dress">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Lova dress</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Lova dress</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress1.jpeg" alt="Rose skirt">
-          <img class="slide" src="img/dress2.jpeg" alt="Rose skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rose skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rose skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress2.jpeg" alt="Rose top">
-          <img class="slide" src="img/dress1.jpeg" alt="Rose top">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rose top</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rose top</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress1.jpeg" alt="Havana skirt">
-          <img class="slide" src="img/dress2.jpeg" alt="Havana skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Havana skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Havana skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress2.jpeg" alt="Lana skirt">
-          <img class="slide" src="img/dress1.jpeg" alt="Lana skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Lana skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Lana skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress1.jpeg" alt="Rio skirt">
-          <img class="slide" src="img/dress2.jpeg" alt="Rio skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rio skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rio skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress2.jpeg" alt="Lova dress">
-          <img class="slide" src="img/dress1.jpeg" alt="Lova dress">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Lova dress</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Lova dress</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-    </section>
+    <!-- Products from content/products.json: the first 8 here... -->
+    <section class="product-grid" id="grid-top"></section>
 
-    <img class="feature-image" src="img/Landingpage.jpeg" alt="Landing page">
+    <!-- Image or video from content/feature.json -->
+    <div class="feature" hidden></div>
 
-    <section class="product-grid">
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress1.jpeg" alt="Rose skirt">
-          <img class="slide" src="img/dress2.jpeg" alt="Rose skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rose skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rose skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress2.jpeg" alt="Rose top">
-          <img class="slide" src="img/dress1.jpeg" alt="Rose top">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rose top</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rose top</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress1.jpeg" alt="Havana skirt">
-          <img class="slide" src="img/dress2.jpeg" alt="Havana skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Havana skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Havana skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress2.jpeg" alt="Lana skirt">
-          <img class="slide" src="img/dress1.jpeg" alt="Lana skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Lana skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Lana skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress1.jpeg" alt="Rio skirt">
-          <img class="slide" src="img/dress2.jpeg" alt="Rio skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rio skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rio skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress2.jpeg" alt="Lova dress">
-          <img class="slide" src="img/dress1.jpeg" alt="Lova dress">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Lova dress</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Lova dress</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress1.jpeg" alt="Rose skirt">
-          <img class="slide" src="img/dress2.jpeg" alt="Rose skirt">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rose skirt</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rose skirt</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-      <article class="product">
-        <div class="product-track">
-          <img class="slide" src="img/dress2.jpeg" alt="Rose top">
-          <img class="slide" src="img/dress1.jpeg" alt="Rose top">
-        </div>
-        <button class="arrow prev" aria-label="Previous image"></button>
-        <button class="arrow next" aria-label="Next image"></button>
-        <p class="product-name">Rose top</p>
-        <div class="product-info" hidden>
-          <h2 class="product-title">Rose top</h2>
-          <p class="product-price">1 200 SEK</p>
-          <p class="product-material">100% organic cotton</p>
-          <button class="order-button" type="button">Order</button>
-        </div>
-      </article>
-    </section>
+    <!-- ...and the rest here -->
+    <section class="product-grid" id="grid-bottom"></section>
 
   </main>
 
   <!-- CONTACT -->
   <footer class="contact">
-    <p class="contact-intro">Emma Carling is an independent, slow fashion brand founded in 2026. She focuses on draping using zero waste techniques that creates movements. She is inspired by historical references with a playful perspective. 
-
-Contemporary presence.
-
-All items are handcrafted in her atelier in Stockholm, Sweden</p>
+    <div class="contact-intro"></div>
 
     <div class="contact-info">
-      <p><a href="mailto:hello@emmacarling.com">hello@emmacarling.com</a></p>
-      <p><a href="tel:+46700000000">+46 70 000 00 00</a></p>
-      <p><a href="https://instagram.com/emmacarling" target="_blank" rel="noopener">@emmacarling</a></p>
+      <p><a class="contact-email"></a></p>
+      <p><a class="contact-phone"></a></p>
+      <p><a class="contact-instagram" target="_blank" rel="noopener"></a></p>
     </div>
   </footer>
 
@@ -310,12 +66,13 @@ All items are handcrafted in her atelier in Stockholm, Sweden</p>
         </div>
       </div>
 
+      <!-- Text from content/order-info.json -->
       <div class="order-terms">
-        <h3>How ordering works</h3>
-        <p>Every piece is made to order. Send a request and I will get back to you within 2&ndash;3 days to confirm details, price and delivery time. Payment is made once the order is confirmed.</p>
+        <h3 class="terms-heading1"></h3>
+        <p class="terms-text1"></p>
 
-        <h3>Returns &amp; refunds</h3>
-        <p>Since each piece is made especially for you, made-to-order items cannot be returned. If something is wrong with your piece, contact me within 14 days of delivery and we will sort it out.</p>
+        <h3 class="terms-heading2"></h3>
+        <p class="terms-text2"></p>
       </div>
     </div>
 
@@ -345,21 +102,13 @@ All items are handcrafted in her atelier in Stockholm, Sweden</p>
 
       <fieldset class="field">
         <legend>Size</legend>
-        <div class="options">
-          <label class="option"><input type="radio" name="size" value="One size" required><span>One size</span></label>
-          <label class="option"><input type="radio" name="size" value="Small / Medium"><span>Small / Medium</span></label>
-          <label class="option"><input type="radio" name="size" value="Large / X-Large"><span>Large / X-Large</span></label>
-        </div>
+        <div class="options size-options"></div>
       </fieldset>
 
       <fieldset class="field">
         <legend>Colour</legend>
-        <div class="options">
-          <label class="option swatch"><input type="radio" name="colour" value="Blue" required><span><i style="background:#72c8e7"></i>Blue</span></label>
-          <label class="option swatch"><input type="radio" name="colour" value="Yellow"><span><i style="background:#fff79f"></i>Yellow</span></label>
-          <label class="option swatch"><input type="radio" name="colour" value="Pink"><span><i style="background:#e68cdd"></i>Pink</span></label>
-          <label class="option swatch"><input type="radio" name="colour" value="Off-white"><span><i style="background:#efefe1"></i>Off-white</span></label>
-          <label class="option swatch"><input type="radio" name="colour" value="Other (see message)"><span><i class="rainbow"></i>Other</span></label>
+        <div class="options colour-options">
+          <label class="option swatch"><input type="radio" name="colour" value="Other (see message)" required><span><i class="rainbow"></i>Other</span></label>
         </div>
         <p class="field-hint other-hint" hidden>Please describe the colour you want in the message below.</p>
       </fieldset>

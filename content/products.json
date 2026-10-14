@@ -1,0 +1,164 @@
+{
+  "products": [
+    {
+      "name": "Rio skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress1.jpeg",
+        "/img/dress2.jpeg"
+      ]
+    },
+    {
+      "name": "Lova dress",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress2.jpeg",
+        "/img/dress1.jpeg"
+      ]
+    },
+    {
+      "name": "Rose skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress1.jpeg",
+        "/img/dress2.jpeg"
+      ]
+    },
+    {
+      "name": "Rose top",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress2.jpeg",
+        "/img/dress1.jpeg"
+      ]
+    },
+    {
+      "name": "Havana skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress1.jpeg",
+        "/img/dress2.jpeg"
+      ]
+    },
+    {
+      "name": "Lana skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress2.jpeg",
+        "/img/dress1.jpeg"
+      ]
+    },
+    {
+      "name": "Rio skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress1.jpeg",
+        "/img/dress2.jpeg"
+      ]
+    },
+    {
+      "name": "Lova dress",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress2.jpeg",
+        "/img/dress1.jpeg"
+      ]
+    },
+    {
+      "name": "Rose skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress1.jpeg",
+        "/img/dress2.jpeg"
+      ]
+    },
+    {
+      "name": "Rose top",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress2.jpeg",
+        "/img/dress1.jpeg"
+      ]
+    },
+    {
+      "name": "Havana skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress1.jpeg",
+        "/img/dress2.jpeg"
+      ]
+    },
+    {
+      "name": "Lana skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress2.jpeg",
+        "/img/dress1.jpeg"
+      ]
+    },
+    {
+      "name": "Rio skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress1.jpeg",
+        "/img/dress2.jpeg"
+      ]
+    },
+    {
+      "name": "Lova dress",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress2.jpeg",
+        "/img/dress1.jpeg"
+      ]
+    },
+    {
+      "name": "Rose skirt",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress1.jpeg",
+        "/img/dress2.jpeg"
+      ]
+    },
+    {
+      "name": "Rose top",
+      "price": 1200,
+      "material": "100% organic cotton",
+      "sizing": "two",
+      "images": [
+        "/img/dress2.jpeg",
+        "/img/dress1.jpeg"
+      ]
+    }
+  ]
+}

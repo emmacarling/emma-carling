@@ -6,17 +6,19 @@
 
   /* The whole palette: white + 3 greys */
   --white: #ffffff;
-  --grey-dark: #4d1017;
-  --grey-mid: #eff4bc;
-  --grey-light: #f3f2f2;
+  --black: #000000;
+  --dark: #3c1b21;
+  --yellow: #f7fbce;
+  --grey-dark: #818181;
+  --grey-light: #d0cfcf;
 
   /* What each colour is used for */
   --bg: var(--white);
-  --text: var(--grey-dark);
+  --text: var(--black);
   --muted: var(--grey-light);
   --line: var(--grey-dark);
-  --surface: var(--grey-light);
-  --button: var(--grey-light);
+  --surface: var(--yellow);
+  --button: var(--dark);
 
   --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -48,15 +50,6 @@ button {
   font: inherit;
   color: inherit;
 }
-
-/* Temporary colour blocks standing in for images */
-.placeholder {
-  background: var(--grey-mid);
-}
-.slide:nth-child(2) { background: var(--grey-light); }
-.slide:nth-child(3) { background: var(--grey-mid); }
-.landing-image { background: var(--grey-mid); }
-
 
 /* ---------- Landing ---------- */
 
@@ -106,6 +99,7 @@ button {
 .introtext {
   text-align: center;
   font-size: 1.125rem;
+  color:(var(--grey-light));
  
 }
 
@@ -126,6 +120,12 @@ button {
 
 /* Full width, natural height, but never taller than 80% of the screen
    (if it would be, it's cropped top and bottom instead of squashed) */
+/* Hidden sections (empty bottom grid, no featured image) */
+.product-grid[hidden],
+.feature[hidden] {
+  display: none;
+}
+
 .feature-image {
   display: block;
   width: 100%;
@@ -333,7 +333,7 @@ button {
 
 .product-material {
   margin: 0.25rem 0 2.5rem;
-  color: var(--text);
+  color: var(--grey-light);
 }
 
 .order-button {
@@ -351,10 +351,11 @@ button {
   transition: opacity 0.2s;
 }
 .order-button:hover {
-  opacity: 0.85;
+  background-color: var(--yellow);
+  color: var(--black)
 }
 .order-button:disabled {
-  opacity: 0.5;
+  opacity: 0.85;
   cursor: default;
 }
 
@@ -491,9 +492,9 @@ button {
 .order-terms {
   margin-top: auto;
   padding: 2rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--text);
   font-size: 0.8125rem;
-  color: var(--line);
+  color: var(--text);
 }
 .order-terms h3 {
   margin: 0 0 0.5rem;
@@ -555,8 +556,9 @@ button {
 .field textarea {
   width: 100%;
   padding: 0.8rem 0.9rem;
+  border: 1px solid var(--grey-dark);
   border-radius: 0;
-  background: var(--surface);
+  background: var(--grey-light);
   color: var(--text);
   font: inherit;
 }
@@ -594,7 +596,7 @@ button {
   gap: 0.5rem;
   padding: 0.6rem 1rem;
   font-size: 0.8125rem;
-  background: var(--surface);
+  background: var(--grey-light);
   transition: background-color 0.2s, color 0.2s;
 }
 .option:hover span {
@@ -602,7 +604,7 @@ button {
 }
 /* Selected: text and background colours swap */
 .option input:checked + span {
-  background: var(--text);
+  background: var(--grey-dark);
   color: var(--surface);
 }
 .option input:focus-visible + span {
@@ -671,6 +673,9 @@ body.no-scroll {
 
 .contact p {
   margin: 0;
+}
+.contact .contact-intro p + p {
+  margin-top: 1em;
 }
 
 

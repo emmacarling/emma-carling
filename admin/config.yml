@@ -6,32 +6,108 @@ backend:
   base_url: https://api.netlify.com
   site_domain: emmacarlingcms.netlify.app
 
-# Uncomment to edit content locally without logging in (run `npx decap-server` in the project folder)
-# local_backend: true
+# Edit content locally without logging in: run `npx decap-server` in the project
+# folder, then open http://localhost:8080/admin/ (only used on localhost)
+local_backend: true
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
 collections:
-  - name: "pages"
-    label: "Pages"
-    files:
-      - name: "home"
-        label: "Home"
-        file: "content/home.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Body", name: "body", widget: "markdown", required: false }
 
-  - name: "products"
-    label: "Products"
-    folder: "content/products"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Name", name: "title", widget: "string" }
-      - { label: "Price (SEK)", name: "price", widget: "number", value_type: "float", min: 0 }
-      - { label: "Image", name: "image", widget: "image", required: false }
-      - { label: "Description", name: "body", widget: "markdown", required: false }
-      - { label: "Stripe Payment Link", name: "stripe_link", widget: "string", required: false }
-      - { label: "Published", name: "published", widget: "boolean", default: true }
+  # ---------- Products ----------
+  - name: "shop"
+    label: "Shop"
+    files:
+      - name: "products"
+        label: "Products"
+        file: "content/products.json"
+        fields:
+          - label: "Products"
+            name: "products"
+            widget: "list"
+            label_singular: "product"
+            summary: "{{fields.name}} – {{fields.price}} SEK"
+            hint: "Drag to change the order. The first 8 are shown above the featured image, the rest below it."
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Price (SEK)", name: "price", widget: "number", value_type: "int", min: 0 }
+              - { label: "Material", name: "material", widget: "string", required: false }
+              - label: "Sizes"
+                name: "sizing"
+                widget: "select"
+                default: "two"
+                options:
+                  - { label: "Two sizes (Small / Medium and Large / X-Large)", value: "two" }
+                  - { label: "One size", value: "one" }
+              - label: "Images"
+                name: "images"
+                widget: "list"
+                label_singular: "image"
+                hint: "The first image is shown in the grid. Drag to change the order."
+                field: { label: "Image", name: "image", widget: "image" }
+
+  # ---------- Everything else ----------
+  - name: "settings"
+    label: "Site settings"
+    files:
+      - name: "landing"
+        label: "Landing page"
+        file: "content/landing.json"
+        fields:
+          - label: "Image or video"
+            name: "media"
+            widget: "file"
+            hint: "Fills the whole first screen. For video, use an .mp4 file (plays muted and on repeat)."
+          - label: "Still image while the video loads"
+            name: "poster"
+            widget: "image"
+            required: false
+            hint: "Only used with a video. Also shown on phones in low-power mode."
+
+      - name: "feature"
+        label: "Featured image (between the product grids)"
+        file: "content/feature.json"
+        fields:
+          - label: "Image or video"
+            name: "media"
+            widget: "file"
+            required: false
+            hint: "For video, use an .mp4 file. Leave empty to hide it."
+
+      - name: "order-info"
+        label: "Order & refund info box"
+        file: "content/order-info.json"
+        fields:
+          - { label: "First heading", name: "heading1", widget: "string" }
+          - { label: "First text", name: "text1", widget: "text" }
+          - { label: "Second heading", name: "heading2", widget: "string" }
+          - { label: "Second text", name: "text2", widget: "text" }
+
+      - name: "colours"
+        label: "Colour options"
+        file: "content/colours.json"
+        fields:
+          - label: "Colours"
+            name: "colours"
+            widget: "list"
+            label_singular: "colour"
+            summary: "{{fields.name}}"
+            hint: "Shown in the order form. \"Other\" is always added at the end automatically."
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Colour", name: "color", widget: "color" }
+
+      - name: "about"
+        label: "Footer text"
+        file: "content/about.json"
+        fields:
+          - { label: "Text about Emma", name: "text", widget: "text", hint: "Empty lines start a new paragraph." }
+
+      - name: "contact"
+        label: "Contact info"
+        file: "content/contact.json"
+        fields:
+          - { label: "Email", name: "email", widget: "string", hint: "Also shown to customers if sending an order fails." }
+          - { label: "Phone", name: "phone", widget: "string", required: false }
+          - { label: "Instagram handle", name: "instagram", widget: "string", required: false, hint: "Without the @, e.g. emmacarling" }

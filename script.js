@@ -1,9 +1,186 @@
 // Order requests are emailed here (via formsubmit.co)
 const ORDER_EMAIL = '63460f1740cce258d377d960881792c9';
 
-// Shown to customers if sending fails (taken from the footer's email link)
-const CONTACT_EMAIL = document.querySelector('.contact a[href^="mailto:"]').textContent;
+// Shown to customers if sending fails (set from content/contact.json)
+let CONTACT_EMAIL = '';
 
+// How many products go above the featured image
+const PRODUCTS_ABOVE_FEATURE = 8;
+
+const SIZES = {
+  one: ['One size'],
+  two: ['Small / Medium', 'Large / X-Large']
+};
+
+
+// ---------- Content (edited by Emma in the CMS at /admin) ----------
+
+function loadJSON(name) {
+  return fetch('content/' + name + '.json', { cache: 'no-cache' }).then(function (res) {
+    if (!res.ok) throw new Error('Could not load content/' + name + '.json');
+    return res.json();
+  });
+}
+
+Promise.all(['products', 'landing', 'feature', 'order-info', 'colours', 'about', 'contact'].map(loadJSON))
+  .then(function (c) {
+    renderProducts(c[0].products || []);
+    renderLanding(c[1]);
+    renderFeature(c[2]);
+    renderOrderInfo(c[3]);
+    renderColours(c[4].colours || []);
+    renderAbout(c[5]);
+    renderContact(c[6]);
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text != null) node.textContent = text;
+  return node;
+}
+
+function formatPrice(price) {
+  return Number(price).toLocaleString('sv-SE') + ' SEK';
+}
+
+function isVideo(src) {
+  return /\.(mp4|webm|mov|m4v)$/i.test(src || '');
+}
+
+// An <img> or a muted, looping <video>, depending on the file
+function mediaElement(src, className, alt, poster) {
+  if (isVideo(src)) {
+    const video = el('video', className);
+    video.src = src;
+    video.autoplay = video.muted = video.loop = video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    if (poster) video.poster = poster;
+    return video;
+  }
+  const img = el('img', className);
+  img.src = src;
+  img.alt = alt || '';
+  return img;
+}
+
+// Plain text with empty lines between paragraphs -> <p> elements
+function paragraphs(container, text) {
+  container.innerHTML = '';
+  String(text || '').split(/\n\s*\n/).forEach(function (part) {
+    if (part.trim()) container.appendChild(el('p', null, part.trim()));
+  });
+}
+
+function renderProducts(products) {
+  const top = document.getElementById('grid-top');
+  const bottom = document.getElementById('grid-bottom');
+
+  products.forEach(function (p, i) {
+    const product = el('article', 'product');
+    product.dataset.sizing = p.sizing || 'two';
+
+    const track = el('div', 'product-track');
+    (p.images || []).forEach(function (src) {
+      track.appendChild(mediaElement(src, 'slide', p.name));
+    });
+
+    const prev = el('button', 'arrow prev');
+    prev.setAttribute('aria-label', 'Previous image');
+    const next = el('button', 'arrow next');
+    next.setAttribute('aria-label', 'Next image');
+
+    // Name on the left, price on the right under the image
+    const meta = el('div', 'product-meta');
+    meta.append(el('p', 'product-name', p.name), el('p', 'product-name grid-price', formatPrice(p.price)));
+
+    // Details shown in the full product view
+    const info = el('div', 'product-info');
+    info.hidden = true;
+    const order = el('button', 'order-button', 'Order');
+    order.type = 'button';
+    info.append(
+      el('h2', 'product-title', p.name),
+      el('p', 'product-price', formatPrice(p.price)),
+      el('p', 'product-material', p.material || ''),
+      order
+    );
+
+    product.append(track, prev, next, meta, info);
+    (i < PRODUCTS_ABOVE_FEATURE ? top : bottom).appendChild(product);
+    setupProduct(product);
+  });
+
+  bottom.hidden = !bottom.children.length;
+}
+
+function renderLanding(c) {
+  const placeholder = document.querySelector('.landing-media');
+  if (c.media) placeholder.replaceWith(mediaElement(c.media, 'landing-image', '', c.poster));
+}
+
+function renderFeature(c) {
+  const feature = document.querySelector('.feature');
+  feature.innerHTML = '';
+  if (c.media) feature.appendChild(mediaElement(c.media, 'feature-image', ''));
+  feature.hidden = !c.media;
+}
+
+function renderOrderInfo(c) {
+  ['heading1', 'text1', 'heading2', 'text2'].forEach(function (key) {
+    document.querySelector('.terms-' + key).textContent = c[key] || '';
+  });
+}
+
+function renderColours(colours) {
+  const options = document.querySelector('.colour-options');
+  const other = options.lastElementChild; // "Other" is always there, always last
+
+  colours.forEach(function (c) {
+    const label = el('label', 'option swatch');
+    const input = el('input');
+    input.type = 'radio';
+    input.name = 'colour';
+    input.value = c.name;
+    input.required = true;
+    const span = el('span');
+    const dot = el('i');
+    dot.style.background = c.color;
+    span.append(dot, c.name);
+    label.append(input, span);
+    options.insertBefore(label, other);
+  });
+}
+
+function renderAbout(c) {
+  paragraphs(document.querySelector('.contact-intro'), c.text);
+}
+
+function renderContact(c) {
+  const email = document.querySelector('.contact-email');
+  const phone = document.querySelector('.contact-phone');
+  const insta = document.querySelector('.contact-instagram');
+  const handle = String(c.instagram || '').replace(/^@/, '');
+
+  CONTACT_EMAIL = c.email || '';
+  email.textContent = c.email || '';
+  email.href = 'mailto:' + (c.email || '');
+  phone.textContent = c.phone || '';
+  phone.href = 'tel:' + String(c.phone || '').replace(/[^\d+]/g, '');
+  insta.textContent = handle ? '@' + handle : '';
+  insta.href = 'https://instagram.com/' + handle;
+
+  // Hide lines that are empty
+  [email, phone, insta].forEach(function (a) {
+    a.parentElement.hidden = !a.textContent;
+  });
+}
+
+
+// ---------- Products in the grid ----------
 
 // Scroll a track one image left (-1) or right (+1)
 function step(track, dir) {
@@ -15,27 +192,16 @@ function markSingle(container, track) {
   container.classList.toggle('single', track.querySelectorAll('.slide').length < 2);
 }
 
-// Arrows inside each product
-document.querySelectorAll('.product').forEach(function (product) {
+function setupProduct(product) {
   const track = product.querySelector('.product-track');
   markSingle(product, track);
-
-  // Show the name on the left and the price on the right in the grid (copied from the product's details)
-  const name = product.querySelector('.product-name');
-  const meta = document.createElement('div');
-  meta.className = 'product-meta';
-  const price = document.createElement('p');
-  price.className = 'product-name grid-price';
-  price.textContent = product.querySelector('.product-price').textContent;
-  name.before(meta);
-  meta.append(name, price);
 
   product.querySelector('.prev').addEventListener('click', function () { step(track, -1); });
   product.querySelector('.next').addEventListener('click', function () { step(track, 1); });
 
   // Clicking the image itself opens the product full screen
   track.addEventListener('click', function () { openOverlay(product); });
-});
+}
 
 
 // Tapping the landing page scrolls down a bit, hinting at the shop below
@@ -113,14 +279,37 @@ const orderForm = orderView.querySelector('.order-form');
 const orderImage = orderView.querySelector('.order-image');
 const formStatus = orderView.querySelector('.form-status');
 const otherHint = orderView.querySelector('.other-hint');
+const sizeOptions = orderView.querySelector('.size-options');
+
+function checkedValue(name) {
+  const input = orderForm.querySelector('input[name="' + name + '"]:checked');
+  return input ? input.value : '';
+}
 
 // "Other" colour: show the hint and make the message required
 function updateOther() {
-  const isOther = orderForm.elements.colour.value === 'Other (see message)';
+  const isOther = checkedValue('colour') === 'Other (see message)';
   otherHint.hidden = !isOther;
   orderForm.elements.message.required = isOther;
 }
 orderForm.addEventListener('change', updateOther);
+
+// Only the sizes this product comes in. A one-size product is pre-selected.
+function renderSizes(sizing) {
+  const sizes = SIZES[sizing] || SIZES.two;
+  sizeOptions.innerHTML = '';
+  sizes.forEach(function (size) {
+    const label = el('label', 'option');
+    const input = el('input');
+    input.type = 'radio';
+    input.name = 'size';
+    input.value = size;
+    input.required = true;
+    input.defaultChecked = sizes.length === 1; // also survives orderForm.reset()
+    label.append(input, el('span', null, size));
+    sizeOptions.appendChild(label);
+  });
+}
 
 function openOrder(product) {
   const name = product.querySelector('.product-title').textContent;
@@ -128,7 +317,8 @@ function openOrder(product) {
 
   // First product image in the top left corner
   orderImage.innerHTML = '';
-  orderImage.appendChild(product.querySelector('.slide').cloneNode(true));
+  const first = product.querySelector('.slide');
+  if (first) orderImage.appendChild(first.cloneNode(true));
 
   orderView.querySelector('.order-summary-name').textContent = name;
   orderView.querySelector('.order-summary-price').textContent = price;
@@ -136,6 +326,7 @@ function openOrder(product) {
   orderView.querySelector('.order-product-price').textContent = price;
 
   orderForm.reset();
+  renderSizes(product.dataset.sizing);
   orderForm.elements.product.value = name;
   orderForm.elements.price.value = price;
   formStatus.textContent = '';
@@ -194,7 +385,8 @@ orderForm.addEventListener('submit', function (e) {
       updateOther();
     })
     .catch(function () {
-      formStatus.textContent = 'Something went wrong. Please try again, or email ' + CONTACT_EMAIL + ' directly.';
+      formStatus.textContent = 'Something went wrong. Please try again' +
+        (CONTACT_EMAIL ? ', or email ' + CONTACT_EMAIL + ' directly.' : '.');
     })
     .finally(function () {
       button.disabled = false;
