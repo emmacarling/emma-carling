@@ -1,8 +1,12 @@
 {
   "colours": [
     {
-      "name": "Blue",
+      "name": "Light blue",
       "color": "#72c8e7"
+    },
+    {
+      "name": "Dark blue",
+      "color": "#1448e5"
     },
     {
       "name": "Yellow",
@@ -15,6 +19,10 @@
     {
       "name": "Off-white",
       "color": "#efefe1"
+    },
+    {
+      "name": "Red",
+      "color": "#f01e1e"
     }
   ]
 }
