@@ -171,6 +171,18 @@ button {
   text-transform: uppercase;
 }
 
+/* Name on the left, price on the right, on one line under the image */
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.5rem 0 0.75rem; /* space above (from the image) and below */
+  padding: 0 1rem; /* pulls name and price in from the image edges */
+}
+.product-meta .product-name {
+  margin: 0;
+}
+
 .arrow {
   position: absolute;
   top: 50%;
@@ -300,6 +312,8 @@ button {
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  /* Lifts the Order button 30% of the column height up from the bottom */
+  padding-bottom: calc((100svh - var(--top) - var(--gap)) * 0.30);
 }
 .overlay-info .order-button {
   margin-top: auto;
@@ -447,11 +461,16 @@ button {
 /* Desktop: the image fills the space above the info box (with the same
    gap as between the two columns) and its width follows from its height */
 @media (min-width: 701px) {
+  /* Image fills the space down to the info box, which starts level
+     with the Message box (--terms-top is measured in script.js) */
   .order-summary {
     display: flex;
-    flex: 1 1 0;
-    min-height: 0;
+    flex: none;
+    height: calc(var(--terms-top, 60%) - var(--gap));
     margin-bottom: var(--gap);
+  }
+  .order-left .order-terms {
+    margin-top: 0;
   }
   .order-image {
     position: relative;
@@ -576,14 +595,15 @@ button {
   padding: 0.6rem 1rem;
   font-size: 0.8125rem;
   background: var(--surface);
-  transition: border-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 .option:hover span {
   border-color: var(--muted);
 }
+/* Selected: text and background colours swap */
 .option input:checked + span {
-  border-color: var(--text);
-  box-shadow: inset 0 0 0 1px var(--text);
+  background: var(--text);
+  color: var(--surface);
 }
 .option input:focus-visible + span {
   outline: 2px solid var(--text);
@@ -733,4 +753,6 @@ body.no-scroll {
   }
 
   .contact-info { flex-direction: column; }
+
+  .grid-price { display: none; }
 }

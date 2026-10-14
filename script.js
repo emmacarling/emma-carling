@@ -20,11 +20,15 @@ document.querySelectorAll('.product').forEach(function (product) {
   const track = product.querySelector('.product-track');
   markSingle(product, track);
 
-  // Show the price under the name in the grid (copied from the product's details)
+  // Show the name on the left and the price on the right in the grid (copied from the product's details)
+  const name = product.querySelector('.product-name');
+  const meta = document.createElement('div');
+  meta.className = 'product-meta';
   const price = document.createElement('p');
-  price.className = 'grid-price';
+  price.className = 'product-name grid-price';
   price.textContent = product.querySelector('.product-price').textContent;
-  product.querySelector('.product-name').after(price);
+  name.before(meta);
+  meta.append(name, price);
 
   product.querySelector('.prev').addEventListener('click', function () { step(track, -1); });
   product.querySelector('.next').addEventListener('click', function () { step(track, 1); });
@@ -139,7 +143,23 @@ function openOrder(product) {
 
   orderView.hidden = false;
   orderView.scrollTop = 0;
+  alignTerms();
 }
+
+// Desktop: line up the top of the info box with the top of the Message box.
+// The image above it fills the space that's left.
+const orderLeft = orderView.querySelector('.order-left');
+function alignTerms() {
+  const message = orderForm.elements.message.getBoundingClientRect();
+  const left = orderLeft.getBoundingClientRect();
+  orderLeft.style.setProperty('--terms-top', (message.top - left.top) + 'px');
+}
+window.addEventListener('resize', function () {
+  if (!orderView.hidden) alignTerms();
+});
+document.fonts.ready.then(function () {
+  if (!orderView.hidden) alignTerms();
+});
 
 function closeOrder() {
   orderView.hidden = true;
