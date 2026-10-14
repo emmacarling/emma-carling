@@ -1,0 +1,46 @@
+/* Extra styles used only in the CMS preview (not on the site) */
+
+/* The preview is a narrow pane, so show 2 products per row */
+.product-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* The landing page fills the preview pane's height */
+.landing {
+  height: 100vh;
+}
+
+.cms-pad {
+  padding: var(--gap);
+}
+
+.cms-note {
+  margin: 0 0 1.5rem;
+  padding: 0.6rem 0.8rem;
+  background: #f3f3f3;
+  color: #666;
+  font-size: 0.75rem;
+}
+
+.cms-details {
+  margin: 0.25rem 0 0;
+  font-size: 0.6875rem;
+  color: #888;
+}
+
+.cms-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  color: #999;
+  font-size: 0.75rem;
+}
+
+.cms-feature-marker {
+  padding: 3rem 1rem;
+  border: 1px dashed #bbb;
+  color: #999;
+  text-align: center;
+  font-size: 0.75rem;
+}
