@@ -3,6 +3,9 @@
   /* Space above images in the product view and form: same as --gap,
      but never less than 4.5rem so the X / Back buttons fit above it */
   --top: max(var(--gap), 4.5rem);
+  /* Extra space in from the image edges for text, form fields and buttons
+     (same as the name and price under the grid images). Images use --gap only. */
+  --text-inset: 1rem;
 
   /* The whole palette: white + 3 greys */
   --white: #ffffff;
@@ -97,6 +100,7 @@ button {
   height: auto;
 }
 .introtext {
+  padding: 0 var(--text-inset);
   text-align: center;
   font-size: 1.125rem;
   color:(var(--grey-light));
@@ -192,7 +196,7 @@ button {
   justify-content: space-between;
   gap: 1rem;
   margin: 0.5rem 0 0.75rem; /* space above (from the image) and below */
-  padding: 0 1rem; /* pulls name and price in from the image edges */
+  padding: 0 var(--text-inset); /* pulls name and price in from the image edges */
 }
 .product-meta .product-name {
   margin: 0;
@@ -346,11 +350,10 @@ video::-webkit-media-controls-overlay-play-button {
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
-  /* Lifts the Order button 30% of the column height up from the bottom */
-  padding-bottom: calc((100svh - var(--top) - var(--gap)) * 0.30);
+  padding: 0 var(--text-inset);
 }
+/* Order button sits right under the material text */
 .overlay-info .order-button {
-  margin-top: auto;
   padding: 0.7rem;
 }
 
@@ -396,7 +399,8 @@ video::-webkit-media-controls-overlay-play-button {
 
 /* Close: a thin X in the top left corner */
 .overlay .overlay-close {
-  left: 1.5rem;
+  /* the X is drawn 0.55rem inside its button, so this lines the X up with the text */
+  left: calc(var(--gap) + var(--text-inset) - 0.55rem);
   right: auto;
   width: 2.5rem;
   height: 2.5rem;
@@ -455,9 +459,9 @@ video::-webkit-media-controls-overlay-play-button {
   padding: var(--top) var(--gap) var(--gap);
 }
 
-/* Left column: image on top, terms box pushed down so its bottom
-   lines up with the Send request button */
+/* Left column: small thumbnail with name + price, then the info box */
 .order-left {
+  position: relative;
   display: flex;
   flex-direction: column;
 }
@@ -470,62 +474,44 @@ video::-webkit-media-controls-overlay-play-button {
   }
 }
 
-/* Name + price next to the thumbnail — only shown on mobile */
-.order-summary-text {
-  display: none;
-}
 .order-view[hidden] {
   display: none;
 }
 
 .order-back {
-  left: var(--gap);
+  left: calc(var(--gap) + var(--text-inset));
   right: auto;
   background: none;
   padding-left: 0;
 }
 
+/* Small thumbnail with the name and price beside it (desktop and mobile) */
+.order-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 .order-image {
-  width: 50%;
+  width: 5rem;
+  flex: none;
   aspect-ratio: 3 / 4;
   display: flex;
 }
 .order-image .slide {
   flex: 1;
 }
+.order-summary-text p { margin: 0; }
+.order-summary-name { font-size: 1.125rem; }
+.order-summary-price { color: var(--muted); }
 
-/* Desktop: the image fills the space above the info box (with the same
-   gap as between the two columns) and its width follows from its height */
+/* Desktop: a bigger thumbnail */
 @media (min-width: 701px) {
-  /* Image fills the space down to the info box, which starts level
-     with the Message box (--terms-top is measured in script.js) */
-  .order-summary {
-    display: flex;
-    flex: none;
-    height: calc(var(--terms-top, 60%) - var(--gap));
-    margin-bottom: var(--gap);
-  }
-  .order-left .order-terms {
-    margin-top: 0;
-  }
-  .order-image {
-    position: relative;
-    flex: 1;
-    width: auto;
-    aspect-ratio: auto;
-  }
-  .order-image .slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: auto;
-    max-width: 100%;
-    height: 100%;
-  }
+  .order-image { width: 8.5rem; }
 }
 
+/* Info box sits right under the thumbnail */
 .order-terms {
-  margin-top: auto;
+  margin: 1.5rem var(--text-inset) 0;
   padding: 2rem;
   border: 1px solid var(--text);
   font-size: 0.8125rem;
@@ -549,15 +535,12 @@ video::-webkit-media-controls-overlay-play-button {
 /* Send request button sits at the bottom of the column,
    level with the bottom of the info box */
 .order-form {
+  padding: 0 var(--text-inset);
   display: flex;
   flex-direction: column;
 }
 .order-form button[type="submit"] {
   margin-top: auto;
-}
-
-.order-product {
-  margin-bottom: 2.5rem;
 }
 
 .order-heading {
@@ -687,7 +670,7 @@ body.no-scroll {
 
 .contact {
   margin: 0 var(--gap);
-  padding: 3rem 0 4rem;
+  padding: 3rem var(--text-inset) 4rem;
   border-top: 1px solid var(--line);
   font-size: 0.8125rem;
 }
@@ -721,7 +704,7 @@ body.no-scroll {
 }
 
 @media (max-width: 700px) {
-  :root { --gap: 0.7rem; }
+  :root { --gap: 0.7rem; --text-inset: 0; }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
 
   /* Overlay: images on top, info underneath, whole overlay scrolls */
@@ -733,8 +716,7 @@ body.no-scroll {
   }
   .overlay-gallery { height: auto; }
   .overlay-track { height: 70svh; }
-  .overlay-info { height: auto; overflow: visible; padding: 2rem 0 1.5rem; }
-  .overlay-info .order-button { margin-top: 0; }
+  .overlay-info { height: auto; overflow: visible; padding: 2rem var(--text-inset) 1.5rem; }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
   /* On mobile the X sits in the top right corner, over the image */
   .overlay .overlay-close {
@@ -749,21 +731,9 @@ body.no-scroll {
   .order-view {
     grid-template-columns: 100%;
   }
-  .order-product { display: none; }
   .order-back { top: 1.25rem; }
 
-  /* Form: small thumbnail with name and price beside it */
-  .order-summary {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .order-image { width: 5rem; flex: none; }
-  .order-summary-text { display: block; }
-  .order-summary-text p { margin: 0; }
-  .order-summary-name { font-size: 1.125rem; }
-  .order-summary-price { color: var(--muted); }
-  .order-terms { margin-top: 1.5rem; padding: 1.25rem; }
+  .order-terms { padding: 1.25rem; }
 
   /* Smaller buttons on mobile */
   .arrow,
@@ -793,5 +763,4 @@ body.no-scroll {
   .contact-info { flex-direction: column; }
 
   .grid-price { display: none; }
-  .product-meta { padding: 0; } /* name all the way to the left */
 }

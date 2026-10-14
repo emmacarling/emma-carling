@@ -347,8 +347,6 @@ function openOrder(product) {
 
   orderView.querySelector('.order-summary-name').textContent = name;
   orderView.querySelector('.order-summary-price').textContent = price;
-  orderView.querySelector('.order-product-name').textContent = name;
-  orderView.querySelector('.order-product-price').textContent = price;
 
   orderForm.reset();
   renderSizes(product.dataset.sizing);
@@ -359,23 +357,7 @@ function openOrder(product) {
 
   orderView.hidden = false;
   orderView.scrollTop = 0;
-  alignTerms();
 }
-
-// Desktop: line up the top of the info box with the top of the Message box.
-// The image above it fills the space that's left.
-const orderLeft = orderView.querySelector('.order-left');
-function alignTerms() {
-  const message = orderForm.elements.message.getBoundingClientRect();
-  const left = orderLeft.getBoundingClientRect();
-  orderLeft.style.setProperty('--terms-top', (message.top - left.top) + 'px');
-}
-window.addEventListener('resize', function () {
-  if (!orderView.hidden) alignTerms();
-});
-document.fonts.ready.then(function () {
-  if (!orderView.hidden) alignTerms();
-});
 
 function closeOrder() {
   orderView.hidden = true;
