@@ -1,10 +1,10 @@
 {
   "products": [
     {
-      "name": "Rio skirt",
+      "name": "Rio skirt (test)",
       "price": 1205,
-      "material": "100% organic cotton",
-      "sizing": "two",
+      "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
+      "sizing": "one",
       "images": [
         "/img/dress1.jpeg",
         "/img/dress2.jpeg"
