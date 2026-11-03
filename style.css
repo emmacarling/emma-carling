@@ -653,8 +653,7 @@ video::-webkit-media-controls-overlay-play-button {
   height: 1px;
 }
 /* Light grey outline; black outline on hover; chosen: yellow with black
-   text, like the Order button on hover (and a black outline, so the pale
-   yellow stands out from the white) */
+   text and no outline, like the Order button on hover */
 .option span {
   display: flex;
   align-items: center;
@@ -669,7 +668,7 @@ video::-webkit-media-controls-overlay-play-button {
   border-color: var(--text);
 }
 .option input:checked + span {
-  border-color: var(--text);
+  border-color: transparent; /* no visible outline, and nothing moves */
   background: var(--yellow);
   color: var(--black);
 }
