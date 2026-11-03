@@ -533,60 +533,26 @@ video::-webkit-media-controls-overlay-play-button {
   cursor: default;
 }
 
-/* Close: a thin X with the word CLOSE to its right, in the top right corner
-   of the screen. The X is the same size as the info menu rows' X (same on
-   phones). */
-.overlay .overlay-close {
-  left: auto;
-  right: var(--gap);
-  top: var(--gap);
-  display: flex;
-  align-items: center;
-  width: auto;
-  height: 2rem;
-  padding: 0 0.25rem 0 1.75rem; /* room for the X on the left */
-  line-height: 1;
-  color: var(--text);
-  border-radius: 0;
-  background: none;
-}
-.overlay .overlay-close::before,
-.overlay .overlay-close::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0.875rem; /* the middle of the X's space */
-  width: 0.9rem;
-  height: 1px;
-  background: currentColor;
-}
-.overlay .overlay-close::before { transform: translate(-50%, -50%) rotate(45deg); }
-.overlay .overlay-close::after  { transform: translate(-50%, -50%) rotate(-45deg); }
-/* Hover: one line under both the X and the word (a text underline would
-   only reach the word, since the X is drawn separately). It starts at the
-   X's left edge (0.425rem in) and ends with the word (0.25rem before the
-   button's right edge). */
-.overlay .overlay-close:hover {
-  opacity: 0.6;
-  text-decoration: none;
-  background: linear-gradient(currentColor, currentColor) no-repeat;
-  background-size: calc(100% - 0.425rem - 0.25rem) 1px;
-  background-position: 0.425rem calc(50% + 0.45rem);
-}
-
+/* Close: "X CLOSE" in the top right corner, like Acne Studios' close
+   button: the X is simply the letter X, 12px uppercase text with a little
+   letter spacing. Same on phones. Hover: underlined (X and word). */
 .overlay-close {
   position: fixed; /* stays in the corner while the product view scrolls */
-  top: 1.5rem;
-  right: 2rem;
+  top: 0;
+  right: 0;
   z-index: 1;
-  padding: 0.4rem 0.9rem;
+  padding: 0.25rem var(--gap); /* the text lines up with the 11px margin */
   border: none;
-  border-radius: 2rem;
-  background: var(--button);
+  background: none;
+  color: var(--text);
   font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  line-height: 20px;
+  letter-spacing: 0.3px;
   text-transform: uppercase;
   cursor: pointer;
+}
+.overlay-close .x {
+  margin-right: 0.45rem; /* the space between the X and CLOSE */
 }
 .overlay-close:hover {
   text-decoration: underline;
