@@ -449,7 +449,11 @@ orderButton.addEventListener('click', function (e) {
   if (orderFields.classList.contains('open')) return; // normal submit
   e.preventDefault();
   setOrderOpen(true);
-  orderForm.elements.name.focus({ preventScroll: true });
+  // On computers, start typing straight away. Not on phones and tablets:
+  // there it would pop up the keyboard before the visitor has read the form.
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    orderForm.elements.name.focus({ preventScroll: true });
+  }
 });
 
 orderForm.addEventListener('submit', function (e) {

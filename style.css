@@ -54,6 +54,16 @@ button {
   color: inherit;
 }
 
+/* No grey square when tapping buttons and choices on phones */
+button,
+label,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* ---------- Landing ---------- */
 
 /* Full screen, including behind the iPhone notch and the browser bars.
@@ -563,6 +573,14 @@ video::-webkit-media-controls-overlay-play-button {
   color: var(--text);
   font: inherit;
 }
+/* Phones and tablets: 16px text in fields, or iPhones zoom in when you tap one */
+@media (hover: none), (max-width: 700px) {
+  .field input[type="email"],
+  .field input[type="text"],
+  .field textarea {
+    font-size: 16px;
+  }
+}
 .field input:focus,
 .field textarea:focus {
   outline: none;
@@ -646,6 +664,14 @@ video::-webkit-media-controls-overlay-play-button {
 
 body.no-scroll {
   overflow: hidden;
+}
+/* While a product is open, hide the page behind it. Otherwise, when a phone
+   resizes the screen (keyboard, address bar), the dark landing video could
+   show through as a black area at the bottom. */
+body.no-scroll .landing,
+body.no-scroll .shop,
+body.no-scroll .contact {
+  visibility: hidden;
 }
 
 
