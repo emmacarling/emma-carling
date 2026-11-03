@@ -545,7 +545,7 @@ video::-webkit-media-controls-overlay-play-button {
   top: 0;
   right: 0;
   z-index: 1;
-  padding: 0.25rem var(--gap); /* the text lines up with the 11px margin */
+  padding: 0.25rem 15px 0.25rem var(--gap); /* the text ends 15px from the right edge */
   border: none;
   background: none;
   color: var(--text);
