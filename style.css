@@ -7,18 +7,13 @@
   /* The whole palette */
   --white: #ffffff;
   --black: #000000;
-  --dark: #3c1b21;
   --yellow: #f7fbce;
-  --grey-dark: #818181;
   --grey-light: #d0cfcf;
 
   /* What each colour is used for */
   --bg: var(--white);
   --text: var(--black);
-  --muted: var(--grey-light);
   --line: #e2e1e1; /* every line and outline: fields, buttons, info rows, footer */
-  --surface: var(--yellow);
-  --button: var(--dark);
 
   --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
@@ -134,14 +129,6 @@ button:focus:not(:focus-visible) {
   width: min(80vw, 40rem);
   height: auto;
 }
-.introtext {
-  padding: 0 var(--text-inset);
-  text-align: center;
-  font-size: 1.125rem;
-  color:(var(--grey-light));
- 
-}
-
 /* ---------- Shop ---------- */
 
 .shop {

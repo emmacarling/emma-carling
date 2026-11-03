@@ -1,0 +1,5 @@
+# Search engines may read the whole site except the CMS editor
+User-agent: *
+Disallow: /admin/
+
+Sitemap: https://emmacarling.com/sitemap.xml

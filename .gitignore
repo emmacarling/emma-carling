@@ -1,0 +1,4 @@
+# Mac Finder files
+.DS_Store
+# Tools installed locally (not part of the site)
+node_modules/

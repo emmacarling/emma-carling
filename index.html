@@ -7,10 +7,11 @@
   <!-- Colours the phone's status bar strip like the top of the landing video
        (keep in sync with --landing-top in style.css) -->
   <meta name="theme-color" content="#59575b">
-  <!-- Icon in the browser tab and on phone home screens: the black logo -->
+  <!-- Icon in the browser tab, on phone home screens and in bookmarks: the round Carling logo (SVG/EC-Logo-Black2.svg) -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
   <!-- Preview when the link is shared (Instagram, iMessage, WhatsApp…) -->
   <meta name="description" content="Emma Carling is an independent slow fashion brand. Every piece is draped with zero waste techniques and handcrafted in her atelier in Stockholm.">
   <meta property="og:type" content="website">
@@ -18,10 +19,23 @@
   <meta property="og:title" content="Emma Carling">
   <meta property="og:description" content="Emma Carling is an independent slow fashion brand. Every piece is draped with zero waste techniques and handcrafted in her atelier in Stockholm.">
   <meta property="og:url" content="https://emmacarling.com/">
-  <meta property="og:image" content="https://emmacarling.com/images/share-logo.png">
+  <meta property="og:image" content="https://emmacarling.com/images/share-carling.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://emmacarling.com/">
+  <!-- Tells search engines who the brand is -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Emma Carling",
+    "url": "https://emmacarling.com/",
+    "logo": "https://emmacarling.com/icon-512.png",
+    "description": "Independent slow fashion brand. Every piece is draped with zero waste techniques and handcrafted in an atelier in Stockholm.",
+    "sameAs": ["https://www.instagram.com/emmacarling1/"]
+  }
+  </script>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
