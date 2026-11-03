@@ -363,10 +363,23 @@ function openOverlay(product) {
   document.body.classList.add('no-scroll');
   document.title = p.name + ' – Emma Carling';
 
+  fitImage();
+
   // Start on the same image the visitor was looking at
   overlayTrack.scrollLeft = current * overlayTrack.clientWidth;
   updateThumbs();
 }
+
+// Phones: the image is as tall as it can be while the Order button still
+// shows on the first screen, above Safari's address bar, however long the
+// product's name is. Measures what's between the image and the button.
+const phone = matchMedia('(max-width: 700px)');
+function fitImage() {
+  if (!phone.matches || overlay.hidden) return;
+  const under = orderButton.getBoundingClientRect().bottom - overlayTrack.getBoundingClientRect().bottom;
+  overlay.style.setProperty('--under-image', Math.ceil(under) + 'px');
+}
+window.addEventListener('resize', fitImage);
 
 // Outline the preview of the image currently in view
 function updateThumbs() {

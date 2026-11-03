@@ -779,7 +779,9 @@ body.no-scroll .contact {
     padding: 0 var(--gap) var(--gap); /* the image starts at the top edge */
   }
   .overlay-gallery { order: 1; position: relative; top: auto; height: auto; }
-  .overlay-track { height: 70svh; }
+  /* As tall as fits with the previews, name, price and Order button under
+     it on the first screen (--under-image is measured in script.js) */
+  .overlay-track { height: max(45svh, calc(100svh - var(--under-image, 30svh) - var(--gap))); }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
   .thumbs {
     order: 2;
