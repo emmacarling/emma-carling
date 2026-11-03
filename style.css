@@ -1,8 +1,5 @@
 :root {
   --gap: 0.7rem;
-  /* Space above images in the product view and form: same as --gap,
-     but never less than 4.5rem so the X / Back buttons fit above it */
-  --top: max(var(--gap), 4.5rem);
   /* Extra space in from the image edges for text, form fields and buttons
      (same as the name and price under the grid images). Images use --gap only. */
   --text-inset: 1rem;
@@ -221,7 +218,7 @@ button:focus:not(:focus-visible) {
   padding: 0;
   border: none;
   background: none;
-  color: var(--grey-dark);
+  color: var(--text);
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
@@ -330,22 +327,22 @@ video::-webkit-media-controls-overlay-play-button {
   display: flex;
   align-items: flex-start;
   gap: var(--gap); /* the margin between the image and the info column */
-  /* Same distance from the screen edge as the shop grid */
-  padding: var(--top) var(--gap) var(--gap);
+  /* The image fills the full height; left and right: the shop grid's margin */
+  padding: 0 var(--gap);
 }
 .overlay[hidden] {
   display: none;
 }
 
-/* Image fills the screen height (minus the margins) and stays there while
-   scrolling; its width follows the photo's shape (3:4) */
+/* Image fills the full screen height and stays there while scrolling;
+   its width follows the photo's shape (3:4) */
 .overlay-gallery {
   position: sticky;
-  top: 0; /* measured from inside the view's top padding, so 0 = level with the title */
+  top: 0;
   flex: 0 1 auto;
   min-width: 0;
-  height: calc(100vh - var(--top) - var(--gap));
-  height: calc(100svh - var(--top) - var(--gap));
+  height: 100vh;
+  height: 100svh;
   aspect-ratio: 3 / 4;
 }
 
@@ -368,7 +365,7 @@ video::-webkit-media-controls-overlay-play-button {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  padding: 0 var(--text-inset);
+  padding: 1.5rem var(--text-inset) var(--gap);
 }
 .overlay-info .order-button {
   flex: none;
@@ -489,13 +486,15 @@ video::-webkit-media-controls-overlay-play-button {
   cursor: default;
 }
 
-/* Close: a thin X in the top left corner */
+/* Close: a thin X in the image's top left corner, the same size as the
+   X of the info menu rows */
 .overlay .overlay-close {
-  /* the X is drawn 0.55rem inside its button, so this lines the X up with the text */
-  left: calc(var(--gap) + var(--text-inset) - 0.55rem);
+  left: calc(var(--gap) + 0.5rem);
   right: auto;
-  width: 2.5rem;
-  height: 2.5rem;
+  top: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--text);
   padding: 0;
   border-radius: 0;
   background: none;
@@ -506,8 +505,8 @@ video::-webkit-media-controls-overlay-play-button {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 1.4rem;
-  height: 1.5px;
+  width: 0.9rem;
+  height: 1px;
   background: currentColor;
 }
 .overlay .overlay-close::before { transform: translate(-50%, -50%) rotate(45deg); }
