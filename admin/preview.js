@@ -149,7 +149,7 @@
           return h('div', { className: 'info-item open' + (hasText ? '' : ' cms-hidden'), key: i },
             h('div', { className: 'info-toggle' },
               h('span', null, s.heading || 'Untitled', hasText ? null : '  (no text – hidden on the site)'),
-              h('span', { className: 'burger' }, h('span'), h('span'))
+              h('span', { className: 'plus' }, h('span'), h('span'))
             ),
             hasText
               ? h('div', { className: 'fold info-text open' }, h('div', { className: 'fold-inner' }, paragraphs(s.text)))
