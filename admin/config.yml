@@ -85,7 +85,7 @@ collections:
             required: false
 
       - name: "order-info"
-        label: "Shipping, returns & care (menu above the Order button)"
+        label: "Shipping, returns & care (menu under the Order button)"
         file: "content/order-info.json"
         fields:
           - label: "Sections"
@@ -93,7 +93,7 @@ collections:
             widget: "list"
             label_singular: "section"
             summary: "{{fields.heading}}"
-            hint: "Each section is a row with a small menu icon above the Order button. Visitors click it to read the text. Drag to change the order. Sections without text are not shown."
+            hint: "Each section is a row with a small menu icon under the Order button. Visitors click it to read the text. Drag to change the order. Sections without text are not shown."
             fields:
               - { label: "Heading", name: "heading", widget: "string" }
               - { label: "Text", name: "text", widget: "text", required: false, hint: "Empty lines start a new paragraph." }

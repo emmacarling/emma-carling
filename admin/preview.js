@@ -138,11 +138,11 @@
     );
   }
 
-  // The menu above the Order button, with every section folded out
+  // The menu under the Order button, with every section folded out
   function OrderInfoPreview(props) {
     const sections = (data(props.entry).sections || []).filter(Boolean);
     return h('div', { className: 'cms-pad' },
-      note('The menu above the Order button. On the site each row is closed until a visitor clicks it; here they are all open. Sections without text are not shown on the site.'),
+      note('The menu under the Order button. On the site each row is closed until a visitor clicks it; here they are all open. Sections without text are not shown on the site.'),
       h('div', { className: 'info-menu cms-info-menu' },
         sections.map(function (s, i) {
           const hasText = String(s.text || '').trim();

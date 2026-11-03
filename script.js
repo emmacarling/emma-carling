@@ -162,7 +162,7 @@ function renderFeature(c) {
   }, seconds * 1000);
 }
 
-// Shipping, returns, care…: one row per section above the Order button,
+// Shipping, returns, care…: one row per section under the Order button,
 // each folding out its text. Sections without text are left out.
 function renderOrderInfo(c) {
   const menu = document.querySelector('.info-menu');
