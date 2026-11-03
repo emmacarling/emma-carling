@@ -85,18 +85,19 @@ collections:
             required: false
 
       - name: "order-info"
-        label: "Shipping, returns & care (menu under the Order button)"
+        label: "Product page: How ordering works, Returns & Care"
         file: "content/order-info.json"
         fields:
-          - label: "Sections"
+          - label: "Info rows under the Order button"
             name: "sections"
             widget: "list"
-            label_singular: "section"
+            label_singular: "info row"
+            collapsed: false
             summary: "{{fields.heading}}"
-            hint: "Each section is a row with a small menu icon under the Order button. Visitors click it to read the text. Drag to change the order. Sections without text are not shown."
+            hint: "Shown on every product page, under the Order button. Each row is a heading with a small menu icon; visitors click it to read the text. Drag to change the order, or add a new row at the bottom. A row without text is hidden on the site."
             fields:
-              - { label: "Heading", name: "heading", widget: "string" }
-              - { label: "Text", name: "text", widget: "text", required: false, hint: "Empty lines start a new paragraph." }
+              - { label: "Heading (the row's title)", name: "heading", widget: "string", hint: "e.g. How ordering works, Returns & refunds, Care" }
+              - { label: "Text (shown when the row is opened)", name: "text", widget: "text", required: false, hint: "Empty lines start a new paragraph." }
 
       - name: "colours"
         label: "Colour options"
