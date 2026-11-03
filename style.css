@@ -467,6 +467,7 @@ video::-webkit-media-controls-overlay-play-button {
   text-underline-offset: 0.2em;
 }
 .info-text .fold-inner {
+  padding-right: 10vw; /* keeps the paragraphs from running too wide */
   font-size: 0.8125rem;
 }
 .info-text p {
@@ -524,9 +525,12 @@ video::-webkit-media-controls-overlay-play-button {
   cursor: pointer;
   transition: opacity 0.2s;
 }
-.order-button:hover {
-  background-color: var(--yellow);
-  color: var(--black)
+/* Only with a mouse: on a phone a tap would leave it yellow afterwards */
+@media (hover: hover) {
+  .order-button:hover {
+    background-color: var(--yellow);
+    color: var(--black);
+  }
 }
 .order-button:disabled {
   opacity: 0.85;
@@ -785,7 +789,7 @@ body.no-scroll .contact {
   .overlay {
     flex-direction: column;
     align-items: stretch;
-    padding: var(--gap);
+    padding: 0 var(--gap) var(--gap); /* the image starts at the top edge */
   }
   .overlay-gallery { order: 1; position: relative; top: auto; height: auto; }
   .overlay-track { height: 70svh; }
@@ -800,7 +804,7 @@ body.no-scroll .contact {
     max-height: none;
     overflow: visible;
   }
-  .thumb { width: 3.25rem; }
+  .thumb { width: 2.25rem; }
   .overlay-info { order: 3; flex: none; height: auto; overflow: visible; padding: 1.25rem var(--text-inset) 1.5rem; }
 
   /* Smaller buttons on mobile */
