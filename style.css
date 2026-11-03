@@ -561,13 +561,13 @@ video::-webkit-media-controls-overlay-play-button {
   text-transform: uppercase;
 }
 
-/* Fields you type in: no background, just a grey outline */
+/* Fields you type in: no background, just a light grey outline */
 .field input[type="email"],
 .field input[type="text"],
 .field textarea {
   width: 100%;
   padding: 0.8rem 0.9rem;
-  border: 1px solid var(--grey-dark);
+  border: 1px solid var(--grey-light);
   border-radius: 0;
   background: none;
   color: var(--text);
@@ -606,15 +606,15 @@ video::-webkit-media-controls-overlay-play-button {
   width: 1px;
   height: 1px;
 }
-/* Grey outline; black outline on hover; chosen: filled with the same grey,
-   yellow text */
+/* Light grey outline; black outline on hover; chosen: filled with the
+   darker grey, yellow text (yellow on the light grey would be unreadable) */
 .option span {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
   font-size: 0.8125rem;
-  border: 1px solid var(--grey-dark);
+  border: 1px solid var(--grey-light);
   background: none;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -757,5 +757,14 @@ body.no-scroll .contact {
 
   .contact-info { flex-direction: column; }
 
-  .grid-price { display: none; }
+  /* Price under the name, in the same light grey as the material text.
+     Two tighter lines take the same height as one line + the space under
+     it did, so the images stay just as far apart. */
+  .product-meta {
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 0;
+  }
+  .product-meta .product-name { line-height: 1.3; }
+  .grid-price { color: var(--grey-light); }
 }
