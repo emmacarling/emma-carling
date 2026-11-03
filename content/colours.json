@@ -23,6 +23,10 @@
     {
       "name": "Red",
       "color": "#f01e1e"
+    },
+    {
+      "name": "Burgundy",
+      "color": "#660033"
     }
   ]
 }
