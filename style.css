@@ -713,6 +713,17 @@ body.no-scroll .contact {
 
 @media (max-width: 700px) {
   :root { --gap: 0.7rem; --text-inset: 0; }
+
+  /* Landing: zoom the video in a bit, towards the right, so the white sky in
+     the top left corner moves out of view, and a smaller logo sits on the
+     dark mountain instead. Bigger scale = more zoom; origin = the point the
+     zoom is centred on (x y). */
+  .landing { overflow: hidden; }
+  .landing-image {
+    transform: scale(1.25);
+    transform-origin: 80% 55%;
+  }
+  .landing-logo { width: 62vw; }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
 
   /* Product view: images on top, info underneath, the whole view scrolls */
