@@ -179,7 +179,7 @@ function renderOrderInfo(c) {
     toggle.setAttribute('aria-expanded', 'false');
     const burger = el('span', 'burger');
     burger.setAttribute('aria-hidden', 'true');
-    burger.append(el('span'), el('span'), el('span'));
+    burger.append(el('span'), el('span'));
     toggle.append(el('span', null, s.heading), burger);
 
     const fold = el('div', 'fold info-text');
