@@ -4,7 +4,7 @@
      (same as the name and price under the grid images). Images use --gap only. */
   --text-inset: 1rem;
 
-  /* The whole palette: white + 3 greys */
+  /* The whole palette */
   --white: #ffffff;
   --black: #000000;
   --dark: #3c1b21;
