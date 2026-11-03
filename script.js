@@ -2,7 +2,7 @@
 const ORDER_EMAIL = '63460f1740cce258d377d960881792c9';
 
 // Shown to customers if sending fails (set from content/contact.json)
-let CONTACT_EMAIL = 'emmacarling@hotmail.com';
+let CONTACT_EMAIL = 'emmacarling2@gmail.com';
 
 // How many products go above the featured image
 const PRODUCTS_ABOVE_FEATURE = 8;
