@@ -16,7 +16,7 @@
   --bg: var(--white);
   --text: var(--black);
   --muted: var(--grey-light);
-  --line: var(--grey-dark);
+  --line: #e2e1e1; /* every line and outline: fields, buttons, info rows, footer */
   --surface: var(--yellow);
   --button: var(--dark);
 
@@ -387,7 +387,7 @@ video::-webkit-media-controls-overlay-play-button {
   pointer-events: none;
 }
 .thumb:hover {
-  border-color: var(--grey-light);
+  border-color: var(--line);
 }
 .thumb.active {
   border-color: var(--text);
@@ -439,13 +439,13 @@ video::-webkit-media-controls-overlay-play-button {
 .info-menu {
   flex: none;
   margin: 1.5rem 0 0;
-  border-top: 1px solid var(--grey-light);
+  border-top: 1px solid var(--line);
 }
 .info-menu[hidden] {
   display: none;
 }
 .info-item {
-  border-bottom: 1px solid var(--grey-light);
+  border-bottom: 1px solid var(--line);
 }
 .info-toggle {
   display: flex;
@@ -533,16 +533,20 @@ video::-webkit-media-controls-overlay-play-button {
   cursor: default;
 }
 
-/* Close: a thin X in the top right corner of the screen, the same size as
-   the X of the info menu rows (same on phones) */
+/* Close: a thin X with the word CLOSE to its right, in the top right corner
+   of the screen. The X is the same size as the info menu rows' X (same on
+   phones). */
 .overlay .overlay-close {
   left: auto;
   right: var(--gap);
   top: var(--gap);
-  width: 2rem;
+  display: flex;
+  align-items: center;
+  width: auto;
   height: 2rem;
+  padding: 0 0.25rem 0 1.75rem; /* room for the X on the left */
+  line-height: 1;
   color: var(--text);
-  padding: 0;
   border-radius: 0;
   background: none;
 }
@@ -551,7 +555,7 @@ video::-webkit-media-controls-overlay-play-button {
   content: "";
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 0.875rem; /* the middle of the X's space */
   width: 0.9rem;
   height: 1px;
   background: currentColor;
@@ -613,7 +617,7 @@ video::-webkit-media-controls-overlay-play-button {
 .field textarea {
   width: 100%;
   padding: 0.8rem 0.9rem;
-  border: 1px solid var(--grey-light);
+  border: 1px solid var(--line);
   border-radius: 0;
   background: none;
   color: var(--text);
@@ -653,14 +657,14 @@ video::-webkit-media-controls-overlay-play-button {
   height: 1px;
 }
 /* Light grey outline; black outline on hover; chosen: yellow with black
-   text and no outline, like the Order button on hover */
+   text, like the Order button on hover, and a black outline */
 .option span {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 1rem;
   font-size: 0.8125rem;
-  border: 1px solid var(--grey-light);
+  border: 1px solid var(--line);
   background: none;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -668,7 +672,7 @@ video::-webkit-media-controls-overlay-play-button {
   border-color: var(--text);
 }
 .option input:checked + span {
-  border-color: transparent; /* no visible outline, and nothing moves */
+  border-color: var(--text);
   background: var(--yellow);
   color: var(--black);
 }
@@ -680,7 +684,7 @@ video::-webkit-media-controls-overlay-play-button {
   width: 0.9rem;
   height: 0.9rem;
   border-radius: 50%;
-  border: 1px solid var(--grey-light);
+  border: 1px solid var(--line);
 }
 
 /* "Other" colour: a rainbow colour wheel */
