@@ -666,7 +666,13 @@ video::-webkit-media-controls-overlay-play-button {
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
+/* Colour buttons: dot and name sit at the left of the square */
+.swatch span {
+  justify-content: flex-start;
+  text-align: left;
+}
 .swatch i {
+  flex: none;
   width: 0.9rem;
   height: 0.9rem;
   border-radius: 50%;
