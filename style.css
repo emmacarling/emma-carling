@@ -100,7 +100,7 @@ button:focus:not(:focus-visible) {
   color: #fff79f; /* same yellow as the form's Yellow option */
 }
 
-/* Logo colour is set inside svg/EmmaCarling.svg (fill="...") */
+/* Logo colour is set inside SVG/EC-Logo-Yellow.svg (fill="...") */
 .landing-logo {
   display: block;
   width: min(80vw, 40rem);

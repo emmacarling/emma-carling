@@ -91,7 +91,7 @@
     return h('header', { className: 'landing' },
       media(props, d.media, 'landing-image', d.poster),
       h('h1', { className: 'landing-title' },
-        h('img', { className: 'landing-logo', src: '/SVG/EmmaCarling.svg', alt: 'Emma Carling' })
+        h('img', { className: 'landing-logo', src: '/SVG/EC-Logo-Yellow.svg', alt: 'Emma Carling' })
       )
     );
   }
