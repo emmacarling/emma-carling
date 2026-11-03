@@ -1,5 +1,5 @@
 // Order requests are emailed here (via formsubmit.co)
-const ORDER_EMAIL = '63460f1740cce258d377d960881792c9';
+const ORDER_EMAIL = 'emmacarling2@gmail.com';
 
 // Shown to customers if sending fails (set from content/contact.json)
 let CONTACT_EMAIL = 'emmacarling2@gmail.com';
