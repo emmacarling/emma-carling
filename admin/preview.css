@@ -37,6 +37,15 @@
   font-size: 0.75rem;
 }
 
+/* Info menu preview: as wide as the info column on the site */
+.cms-info-menu {
+  max-width: 400px;
+}
+/* A section without text (hidden on the site) */
+.cms-hidden {
+  opacity: 0.45;
+}
+
 .cms-feature-marker {
   padding: 3rem 1rem;
   border: 1px dashed #bbb;
