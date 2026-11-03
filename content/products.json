@@ -1,11 +1,12 @@
 {
   "products": [
     {
-      "name": "Rio skirt (test)",
-      "price": 1206,
+      "name": "Röda test",
+      "price": 2002,
       "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
-      "sizing": "one",
+      "sizing": "two",
       "images": [
+        "/images/uploads/test.jpg",
         "/img/dress1.jpeg",
         "/img/dress2.jpeg"
       ]
