@@ -299,7 +299,7 @@ document.querySelector('.landing').addEventListener('click', function () {
 
 const overlay = document.querySelector('.overlay');
 const overlayTrack = overlay.querySelector('.overlay-track');
-const dots = overlay.querySelector('.dots');
+const thumbs = overlay.querySelector('.thumbs');
 const defaultTitle = document.title;
 let currentProduct = null;
 let openedFromSite = false; // the product's address was added to the history by a click
@@ -318,16 +318,31 @@ function openOverlay(product) {
   overlay.querySelector('.product-material').textContent = p.material || '';
   resetOrder(product);
 
-  // One dot per image
-  dots.innerHTML = '';
-  overlayTrack.querySelectorAll('.slide').forEach(function (slide, i) {
-    const dot = document.createElement('button');
-    dot.type = 'button';
-    dot.setAttribute('aria-label', 'Image ' + (i + 1));
-    dot.addEventListener('click', function () {
+  // One small preview per image; clicking it shows that image
+  thumbs.innerHTML = '';
+  (p.images || []).forEach(function (src, i) {
+    const thumb = el('button', 'thumb');
+    thumb.type = 'button';
+    thumb.setAttribute('aria-label', 'Image ' + (i + 1));
+    if (isVideo(src)) {
+      // A video shows its first frame, without playing
+      const video = el('video');
+      video.muted = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.preload = 'metadata';
+      video.src = src + '#t=0.1';
+      thumb.appendChild(video);
+    } else {
+      const img = el('img');
+      img.src = src;
+      img.alt = '';
+      thumb.appendChild(img);
+    }
+    thumb.addEventListener('click', function () {
       overlayTrack.scrollTo({ left: i * overlayTrack.clientWidth, behavior: 'smooth' });
     });
-    dots.appendChild(dot);
+    thumbs.appendChild(thumb);
   });
 
   overlay.hidden = false;
@@ -338,17 +353,17 @@ function openOverlay(product) {
 
   // Start on the same image the visitor was looking at
   overlayTrack.scrollLeft = current * overlayTrack.clientWidth;
-  updateDots();
+  updateThumbs();
 }
 
-// Highlight the dot of the image currently in view
-function updateDots() {
+// Outline the preview of the image currently in view
+function updateThumbs() {
   const current = Math.round(overlayTrack.scrollLeft / overlayTrack.clientWidth);
-  dots.querySelectorAll('button').forEach(function (dot, i) {
-    dot.classList.toggle('active', i === current);
+  thumbs.querySelectorAll('.thumb').forEach(function (thumb, i) {
+    thumb.classList.toggle('active', i === current);
   });
 }
-overlayTrack.addEventListener('scroll', updateDots);
+overlayTrack.addEventListener('scroll', updateThumbs);
 
 // fromHistory: closed by the browser's back button, so leave the address alone
 function closeOverlay(fromHistory) {

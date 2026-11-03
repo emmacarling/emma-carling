@@ -261,9 +261,9 @@ button:focus:not(:focus-visible) {
 .arrow.prev { left: 0.5rem; }
 .arrow.next { right: 0.5rem; }
 
-/* Only one image: nothing to scroll, so no arrows */
+/* Only one image: nothing to scroll, so no arrows or previews */
 .single .arrow,
-.single .dots {
+.single .thumbs {
   display: none;
 }
 
@@ -273,14 +273,13 @@ button:focus:not(:focus-visible) {
   .arrow {
     display: none;
   }
-  /* Product view: arrows and dots show how many images there are,
-     but you swipe to change image */
+  /* Product view: arrows show there are more images, but you swipe (or
+     tap a preview) to change image */
   .overlay:not(.single) .arrow {
     display: block;
     opacity: 1;
   }
-  .overlay .arrow,
-  .dots button {
+  .overlay .arrow {
     pointer-events: none;
   }
 }
@@ -292,29 +291,6 @@ video::-webkit-media-controls-start-playback-button,
 video::-webkit-media-controls-overlay-play-button {
   display: none !important;
   -webkit-appearance: none;
-}
-
-/* Dots showing how many images there are, and which one is in view */
-.dots {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 1.25rem;
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.dots button {
-  width: 0.5rem;
-  height: 0.5rem;
-  padding: 0;
-  border: 1px solid var(--white);
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
-}
-.dots button.active {
-  background: var(--white);
 }
 
 /* Arrows sit in the middle of the image, not the image + name */
@@ -347,24 +323,67 @@ video::-webkit-media-controls-overlay-play-button {
   background: var(--bg);
   display: flex;
   align-items: flex-start;
-  gap: var(--gap); /* the margin between the image and the info column */
-  /* The image fills the full height; left and right: the shop grid's margin */
-  padding: 0 var(--gap);
+  gap: var(--gap); /* between the previews, the image and the info column */
+  /* The shop grid's margin above and at the sides; the image reaches the bottom */
+  padding: var(--gap) var(--gap) 0;
 }
 .overlay[hidden] {
   display: none;
 }
 
-/* Image fills the full screen height and stays there while scrolling;
-   its width follows the photo's shape (3:4) */
+/* Image fills the screen height under the top margin and stays there while
+   scrolling; its width follows the photo's shape (3:4) */
 .overlay-gallery {
   position: sticky;
-  top: 0;
+  top: 0; /* measured from inside the view's top padding */
   flex: 0 1 auto;
   min-width: 0;
-  height: 100vh;
-  height: 100svh;
+  height: calc(100vh - var(--gap));
+  height: calc(100svh - var(--gap));
   aspect-ratio: 3 / 4;
+}
+
+/* Small previews in a column left of the image; they stay put too.
+   The one in view gets a black outline (like a button on hover). */
+.thumbs {
+  position: sticky;
+  top: 0;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 4.5rem;
+  max-height: calc(100svh - 2 * var(--gap));
+  overflow-y: auto; /* many images: scroll the previews */
+  scrollbar-width: none;
+}
+.thumbs::-webkit-scrollbar {
+  display: none;
+}
+.thumb {
+  flex: none;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.thumb img,
+.thumb video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.thumb:hover {
+  border-color: var(--grey-light);
+}
+.thumb.active {
+  border-color: var(--text);
 }
 
 .overlay-track {
@@ -507,12 +526,12 @@ video::-webkit-media-controls-overlay-play-button {
   cursor: default;
 }
 
-/* Close: a thin X in the image's top left corner, the same size as the
-   X of the info menu rows */
+/* Close: a thin X in the top right corner of the screen, the same size as
+   the X of the info menu rows (same on phones) */
 .overlay .overlay-close {
-  left: calc(var(--gap) + 0.5rem);
-  right: auto;
-  top: 0.5rem;
+  left: auto;
+  right: var(--gap);
+  top: var(--gap);
   width: 2rem;
   height: 2rem;
   color: var(--text);
@@ -753,24 +772,28 @@ body.no-scroll .contact {
   .landing-logo { width: 54vw; }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
 
-  /* Product view: images on top, info underneath, the whole view scrolls */
+  /* Product view: image on top, the previews centred under it, then the
+     info; the whole view scrolls */
   .overlay {
-    display: block;
-    overflow-y: auto;
+    flex-direction: column;
+    align-items: stretch;
     padding: var(--gap);
   }
-  .overlay-gallery { position: relative; top: auto; height: auto; }
+  .overlay-gallery { order: 1; position: relative; top: auto; height: auto; }
   .overlay-track { height: 70svh; }
-  .overlay-info { height: auto; overflow: visible; padding: 2rem var(--text-inset) 1.5rem; }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
-  /* On mobile the X sits in the top right corner, over the image */
-  .overlay .overlay-close {
-    left: auto;
-    right: calc(var(--gap) + 0.25rem);
-    top: calc(var(--gap) + 0.25rem);
-    color: var(--grey-dark);
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+  .thumbs {
+    order: 2;
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    max-height: none;
+    overflow: visible;
   }
+  .thumb { width: 3.25rem; }
+  .overlay-info { order: 3; flex: none; height: auto; overflow: visible; padding: 1.25rem var(--text-inset) 1.5rem; }
 
   /* Smaller buttons on mobile */
   .arrow,
