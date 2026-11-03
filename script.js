@@ -468,6 +468,15 @@ function resetOrder(product) {
   formStatus.textContent = '';
   updateOther();
   setOrderOpen(false);
+
+  // The info rows (How ordering works, Care…) always start closed
+  document.querySelectorAll('.info-item.open').forEach(function (item) {
+    const fold = item.querySelector('.info-text');
+    item.classList.remove('open');
+    fold.classList.remove('open');
+    fold.inert = true;
+    item.querySelector('.info-toggle').setAttribute('aria-expanded', 'false');
+  });
 }
 
 // The first press on Order unfolds the form (the button slides down);

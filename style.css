@@ -26,6 +26,13 @@
      Safari shows it in the status bar strip above the page, so the strip
      blends into the video instead of being white. */
   --landing-top: #59575b;
+
+  /* ---- Landing page on phones: change these two to adjust it ----
+     Zoom of the video: 1 = not zoomed, 1.2 = 20% closer. More zoom hides
+     more of the white sky behind the logo, but crops the person tighter.
+     Logo width: share of the screen width (e.g. 50vw = 50%). */
+  --landing-zoom-mobile: 1.2;
+  --landing-logo-mobile: 50vw;
 }
 
 /* Above the page (status bar, pull-down bounce): the landing's dark grey.
@@ -645,8 +652,9 @@ video::-webkit-media-controls-overlay-play-button {
   width: 1px;
   height: 1px;
 }
-/* Light grey outline; black outline on hover; chosen: filled with the
-   darker grey, yellow text (yellow on the light grey would be unreadable) */
+/* Light grey outline; black outline on hover; chosen: yellow with black
+   text, like the Order button on hover (and a black outline, so the pale
+   yellow stands out from the white) */
 .option span {
   display: flex;
   align-items: center;
@@ -661,9 +669,9 @@ video::-webkit-media-controls-overlay-play-button {
   border-color: var(--text);
 }
 .option input:checked + span {
-  border-color: var(--grey-dark);
-  background: var(--grey-dark);
-  color: var(--surface);
+  border-color: var(--text);
+  background: var(--yellow);
+  color: var(--black);
 }
 .option input:focus-visible + span {
   outline: 2px solid var(--text);
@@ -754,8 +762,9 @@ body.no-scroll .contact {
      corner is zoomed out of view so the logo sits on the dark mountain.
      - object-position: which part of the video is shown; the first value
        moves it sideways (the person is a bit left of centre in the video)
-     - scale: how much it's zoomed in; origin: the point the zoom is centred
-       on (x y), here the person, so she stays in the middle
+     - scale: how much it's zoomed in (--landing-zoom-mobile at the top);
+       origin: the point the zoom is centred on (x y), here the person, so
+       she stays in the middle
      Only the video: its still image (shown in Low Power Mode) is a
      different photo and stays as it is. */
   .landing {
@@ -766,10 +775,10 @@ body.no-scroll .contact {
   }
   video.landing-image {
     object-position: 28% 58%;
-    transform: scale(1.3);
+    transform: scale(var(--landing-zoom-mobile)); /* set at the top of this file */
     transform-origin: 50% 90%;
   }
-  .landing-logo { width: 54vw; }
+  .landing-logo { width: var(--landing-logo-mobile); }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
 
   /* Product view: image on top, the previews centred under it, then the
