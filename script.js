@@ -135,7 +135,19 @@ function renderProducts(products) {
 
 function renderLanding(c) {
   const placeholder = document.querySelector('.landing-media');
-  if (c.media) placeholder.replaceWith(mediaElement(c.media, 'landing-image', '', c.poster));
+  if (!c.media) return;
+  const media = mediaElement(c.media, 'landing-image', '', c.poster);
+  if (media.tagName !== 'VIDEO' || !c.poster) {
+    placeholder.replaceWith(media);
+    return;
+  }
+  // A video with a still image: show the still as a plain image, with the video
+  // invisible on top until it really plays (see .landing-video in style.css)
+  const still = mediaElement(c.poster, 'landing-image', '');
+  media.classList.add('landing-video', 'waiting');
+  media.addEventListener('playing', function () { media.classList.remove('waiting'); }, { once: true });
+  placeholder.replaceWith(still);
+  still.after(media);
 }
 
 // Feature slide: the images/videos fade into each other in a loop

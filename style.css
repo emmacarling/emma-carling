@@ -21,6 +21,17 @@
   --button: var(--dark);
 
   --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* The dark grey at the top of the landing video and its still image.
+     Safari shows it in the status bar strip above the page, so the strip
+     blends into the video instead of being white. */
+  --landing-top: #59575b;
+}
+
+/* Above the page (status bar, pull-down bounce): the landing's dark grey.
+   Below it (bounce at the very bottom): white. The page itself is white. */
+html {
+  background: linear-gradient(var(--landing-top) 50%, var(--bg) 50%);
 }
 
 * {
@@ -83,6 +94,16 @@ button:focus:not(:focus-visible) {
      you see from just above the head down to the ankles.
      Lower % = show more of the top, higher % = show more of the bottom. */
   object-position: center 58%;
+}
+
+/* The landing video lies invisible on top of its still image until it really
+   plays. Phones in Low Power Mode never autoplay videos and would otherwise
+   show a play button; this way they just show the still image. */
+.landing-video {
+  transition: opacity 0.6s ease;
+}
+.landing-video.waiting {
+  opacity: 0;
 }
 
 .landing-title {
@@ -718,7 +739,12 @@ body.no-scroll .contact {
      the top left corner moves out of view, and a smaller logo sits on the
      dark mountain instead. Bigger scale = more zoom; origin = the point the
      zoom is centred on (x y). */
-  .landing { overflow: hidden; }
+  .landing {
+    overflow: hidden;
+    /* A bit shorter than the screen, so the top of the grid peeks out */
+    height: calc(100vh - 4rem);
+    height: calc(100svh - 4rem);
+  }
   .landing-image {
     transform: scale(1.25);
     transform-origin: 80% 55%;
