@@ -131,7 +131,7 @@
           }),
           h('label', { className: 'option swatch' },
             h('input', { type: 'radio', name: 'colour' }),
-            h('span', null, h('i', { className: 'rainbow' }), 'Other')
+            h('span', null, h('i', { className: 'rainbow' }), 'Special request')
           )
         )
       )

@@ -40,6 +40,11 @@ collections:
                 options:
                   - { label: "Two sizes (Small / Medium and Large / X-Large)", value: "two" }
                   - { label: "One size", value: "one" }
+              - label: "Colours"
+                name: "colours"
+                widget: "colour-picker"
+                required: false
+                hint: "The colours this product comes in. \"Special request\" is always shown too. The colours are set under Site settings → Colour options."
               - label: "Images"
                 name: "images"
                 widget: "list"
@@ -108,7 +113,7 @@ collections:
             widget: "list"
             label_singular: "colour"
             summary: "{{fields.name}}"
-            hint: "Shown in the order form. \"Other\" is always added at the end automatically."
+            hint: "Shown in the order form. Tick which colours each product comes in under Shop → Products. \"Special request\" is always added at the end automatically. If you rename a colour, tick it again on the products that use it."
             fields:
               - { label: "Name", name: "name", widget: "string" }
               - { label: "Colour", name: "color", widget: "color" }

@@ -666,6 +666,10 @@ video::-webkit-media-controls-overlay-play-button {
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
+/* Colours this product doesn't come in */
+.option[hidden] {
+  display: none;
+}
 /* Colour buttons: dot and name sit at the left of the square */
 .swatch span {
   justify-content: flex-start;

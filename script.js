@@ -216,7 +216,7 @@ function renderOrderInfo(c) {
 
 function renderColours(colours) {
   const options = document.querySelector('.colour-options');
-  const other = options.lastElementChild; // "Other" is always there, always last
+  const special = options.lastElementChild; // "Special request" is always there, always last
 
   colours.forEach(function (c) {
     const label = el('label', 'option swatch');
@@ -230,7 +230,19 @@ function renderColours(colours) {
     dot.style.background = c.color;
     span.append(dot, c.name);
     label.append(input, span);
-    options.insertBefore(label, other);
+    label.dataset.colour = c.name;
+    options.insertBefore(label, special);
+  });
+}
+
+// Only the colours this product comes in (picked in the CMS). Products
+// without a choice, or with "All colours", show every colour.
+function showColours(allowed) {
+  const all = !Array.isArray(allowed) || allowed.indexOf('all') !== -1;
+  document.querySelectorAll('.colour-options [data-colour]').forEach(function (label) {
+    const show = all || allowed.indexOf(label.dataset.colour) !== -1;
+    label.hidden = !show;
+    label.querySelector('input').disabled = !show;
   });
 }
 
@@ -427,9 +439,9 @@ function checkedValue(name) {
   return input ? input.value : '';
 }
 
-// "Other" colour: show the hint and make the message required
+// "Special request" colour: show the hint and make the message required
 function updateOther() {
-  const isOther = checkedValue('colour') === 'Other (see message)';
+  const isOther = checkedValue('colour') === 'Special request (see message)';
   otherHint.hidden = !isOther;
   orderForm.elements.message.required = isOther;
 }
@@ -463,6 +475,7 @@ function resetOrder(product) {
   const p = product.data;
   orderForm.reset();
   renderSizes(p.sizing || 'two');
+  showColours(p.colours);
   orderForm.elements.product.value = p.name;
   orderForm.elements.price.value = formatPrice(p.price);
   formStatus.textContent = '';
