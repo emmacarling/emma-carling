@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emma Carling</title>
+  <script>
+    // GitHub Pages shows this page for any address that isn't a file, like
+    // emmacarling.com/lova-dress. Product addresses are sent on to the shop,
+    // which opens that product and shows the address again (see
+    // openFromAddress in script.js).
+    var slug = location.pathname.replace(/^\/+|\/+$/g, '');
+    if (/^[a-z0-9-]+$/.test(slug)) location.replace('/?product=' + slug + location.hash);
+  </script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 0.9375rem;
+    }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <p>This page doesn't exist. <a href="/">Go to Emma Carling</a></p>
+</body>
+</html>

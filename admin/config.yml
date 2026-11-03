@@ -85,13 +85,18 @@ collections:
             required: false
 
       - name: "order-info"
-        label: "Order & refund info box"
+        label: "Shipping, returns & care (menu above the Order button)"
         file: "content/order-info.json"
         fields:
-          - { label: "First heading", name: "heading1", widget: "string" }
-          - { label: "First text", name: "text1", widget: "text" }
-          - { label: "Second heading", name: "heading2", widget: "string" }
-          - { label: "Second text", name: "text2", widget: "text" }
+          - label: "Sections"
+            name: "sections"
+            widget: "list"
+            label_singular: "section"
+            summary: "{{fields.heading}}"
+            hint: "Each section is a row with a small menu icon above the Order button. Visitors click it to read the text. Drag to change the order. Sections without text are not shown."
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Text", name: "text", widget: "text", required: false, hint: "Empty lines start a new paragraph." }
 
       - name: "colours"
         label: "Colour options"

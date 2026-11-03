@@ -1,5 +1,7 @@
-// Order requests are emailed here (via formsubmit.co)
-const ORDER_EMAIL = 'emmacarling2@gmail.com';
+// Order requests are sent with Formspree (formspree.io): Emma gets an email
+// for each one, and they are also saved in her Formspree dashboard.
+// The form ID is the last part of the form's endpoint, https://formspree.io/f/<ID>
+const FORMSPREE_FORM_ID = 'YOUR_FORM_ID';
 
 // Shown to customers if sending fails (set from content/contact.json)
 let CONTACT_EMAIL = 'emmacarling2@gmail.com';
@@ -16,7 +18,7 @@ const SIZES = {
 // ---------- Content (edited by Emma in the CMS at /admin) ----------
 
 function loadJSON(name) {
-  return fetch('content/' + name + '.json', { cache: 'no-cache' }).then(function (res) {
+  return fetch('/content/' + name + '.json', { cache: 'no-cache' }).then(function (res) {
     if (!res.ok) throw new Error('Could not load content/' + name + '.json');
     return res.json();
   });
@@ -31,6 +33,7 @@ Promise.all(['products', 'landing', 'feature', 'order-info', 'colours', 'about',
     renderColours(c[4].colours || []);
     renderAbout(c[5]);
     renderContact(c[6]);
+    openFromAddress();
   })
   .catch(function (err) {
     console.error(err);
@@ -83,13 +86,30 @@ function paragraphs(container, text) {
   });
 }
 
+// "Lova dress" -> "lova-dress", "Rosé top" -> "rose-top"
+function slugify(name) {
+  return String(name || 'product')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'product';
+}
+
+// Every product's address, e.g. "lova-dress" -> its <article> in the grid
+const productsBySlug = new Map();
+
 function renderProducts(products) {
   const top = document.getElementById('grid-top');
   const bottom = document.getElementById('grid-bottom');
 
   products.forEach(function (p, i) {
     const product = el('article', 'product');
-    product.dataset.sizing = p.sizing || 'two';
+
+    // Its own address. Two products with the same name get -2, -3...
+    const base = slugify(p.name);
+    let slug = base;
+    for (let n = 2; productsBySlug.has(slug); n++) slug = base + '-' + n;
+    productsBySlug.set(slug, product);
+    product.dataset.slug = slug;
+    product.data = p;
 
     const track = el('div', 'product-track');
     (p.images || []).forEach(function (src) {
@@ -105,19 +125,7 @@ function renderProducts(products) {
     const meta = el('div', 'product-meta');
     meta.append(el('p', 'product-name', p.name), el('p', 'product-name grid-price', formatPrice(p.price)));
 
-    // Details shown in the full product view
-    const info = el('div', 'product-info');
-    info.hidden = true;
-    const order = el('button', 'order-button', 'Order');
-    order.type = 'button';
-    info.append(
-      el('h2', 'product-title', p.name),
-      el('p', 'product-price', formatPrice(p.price)),
-      el('p', 'product-material', p.material || ''),
-      order
-    );
-
-    product.append(track, prev, next, meta, info);
+    product.append(track, prev, next, meta);
     (i < PRODUCTS_ABOVE_FEATURE ? top : bottom).appendChild(product);
     setupProduct(product);
   });
@@ -154,10 +162,44 @@ function renderFeature(c) {
   }, seconds * 1000);
 }
 
+// Shipping, returns, care…: one row per section above the Order button,
+// each folding out its text. Sections without text are left out.
 function renderOrderInfo(c) {
-  ['heading1', 'text1', 'heading2', 'text2'].forEach(function (key) {
-    document.querySelector('.terms-' + key).textContent = c[key] || '';
+  const menu = document.querySelector('.info-menu');
+  // (older content had heading1/text1 + heading2/text2 instead of a list)
+  const sections = c.sections || [1, 2, 3].map(function (n) {
+    return { heading: c['heading' + n], text: c['text' + n] };
   });
+
+  menu.innerHTML = '';
+  sections.filter(function (s) { return s && s.heading && String(s.text || '').trim(); }).forEach(function (s) {
+    const item = el('div', 'info-item');
+    const toggle = el('button', 'info-toggle');
+    toggle.type = 'button';
+    toggle.setAttribute('aria-expanded', 'false');
+    const burger = el('span', 'burger');
+    burger.setAttribute('aria-hidden', 'true');
+    burger.append(el('span'), el('span'), el('span'));
+    toggle.append(el('span', null, s.heading), burger);
+
+    const fold = el('div', 'fold info-text');
+    fold.inert = true;
+    const inner = el('div', 'fold-inner');
+    paragraphs(inner, s.text);
+    fold.appendChild(inner);
+
+    toggle.addEventListener('click', function () {
+      const open = !fold.classList.contains('open');
+      fold.classList.toggle('open', open);
+      fold.inert = !open;
+      item.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+
+    item.append(toggle, fold);
+    menu.appendChild(item);
+  });
+  menu.hidden = !menu.children.length;
 }
 
 function renderColours(colours) {
@@ -224,8 +266,14 @@ function setupProduct(product) {
   product.querySelector('.prev').addEventListener('click', function () { step(track, -1); });
   product.querySelector('.next').addEventListener('click', function () { step(track, 1); });
 
-  // Clicking the image itself opens the product full screen
-  track.addEventListener('click', function () { openOverlay(product); });
+  // Clicking the image itself opens the product full screen, at its own address
+  track.addEventListener('click', function () {
+    openOverlay(product);
+    if (location.pathname !== '/' + product.dataset.slug) {
+      history.pushState({ product: product.dataset.slug }, '', '/' + product.dataset.slug);
+      openedFromSite = true;
+    }
+  });
 }
 
 
@@ -235,23 +283,28 @@ document.querySelector('.landing').addEventListener('click', function () {
 });
 
 
-// ---------- Product overlay ----------
+// ---------- Product view ----------
 
 const overlay = document.querySelector('.overlay');
 const overlayTrack = overlay.querySelector('.overlay-track');
-const overlayInfo = overlay.querySelector('.overlay-info');
 const dots = overlay.querySelector('.dots');
+const defaultTitle = document.title;
 let currentProduct = null;
+let openedFromSite = false; // the product's address was added to the history by a click
 
 function openOverlay(product) {
+  const p = product.data;
   const track = product.querySelector('.product-track');
   const current = Math.round(track.scrollLeft / track.clientWidth);
   currentProduct = product;
 
-  // Copy the product's images and details into the overlay
+  // The product's images and details
   overlayTrack.innerHTML = track.innerHTML;
-  overlayInfo.innerHTML = product.querySelector('.product-info').innerHTML;
   markSingle(overlay, overlayTrack);
+  overlay.querySelector('.product-title').textContent = p.name;
+  overlay.querySelector('.product-price').textContent = formatPrice(p.price);
+  overlay.querySelector('.product-material').textContent = p.material || '';
+  resetOrder(product);
 
   // One dot per image
   dots.innerHTML = '';
@@ -266,7 +319,10 @@ function openOverlay(product) {
   });
 
   overlay.hidden = false;
+  overlay.scrollTop = 0;
+  orderForm.scrollTop = 0;
   document.body.classList.add('no-scroll');
+  document.title = p.name + ' – Emma Carling';
 
   // Start on the same image the visitor was looking at
   overlayTrack.scrollLeft = current * overlayTrack.clientWidth;
@@ -282,29 +338,62 @@ function updateDots() {
 }
 overlayTrack.addEventListener('scroll', updateDots);
 
-function closeOverlay() {
+// fromHistory: closed by the browser's back button, so leave the address alone
+function closeOverlay(fromHistory) {
+  if (overlay.hidden) return;
   overlay.hidden = true;
   document.body.classList.remove('no-scroll');
+  document.title = defaultTitle;
+  if (fromHistory !== true && location.pathname !== '/') {
+    if (openedFromSite) history.back();
+    else history.replaceState(null, '', '/');
+  }
+  openedFromSite = false;
 }
 
 overlay.querySelector('.prev').addEventListener('click', function () { step(overlayTrack, -1); });
 overlay.querySelector('.next').addEventListener('click', function () { step(overlayTrack, 1); });
-overlay.querySelector('.overlay-close').addEventListener('click', closeOverlay);
+overlay.querySelector('.overlay-close').addEventListener('click', function () { closeOverlay(); });
 
-// The Order button is copied in with the product info, so listen on the container
-overlayInfo.addEventListener('click', function (e) {
-  if (e.target.closest('.order-button')) openOrder(currentProduct);
+
+// ---------- Product addresses: emmacarling.com/lova-dress ----------
+
+// The product named in the address. Addresses that aren't files (like
+// /lova-dress) are sent here by 404.html as /?product=lova-dress.
+function slugFromAddress() {
+  const fromQuery = new URLSearchParams(location.search).get('product');
+  if (fromQuery) return fromQuery;
+  return decodeURIComponent(location.pathname).replace(/index\.html$/, '').replace(/^\/+|\/+$/g, '');
+}
+
+function openFromAddress() {
+  const slug = slugFromAddress();
+  if (!slug) return;
+  const product = productsBySlug.get(slug);
+  if (!product) {
+    history.replaceState(null, '', '/'); // no such product (any more): just show the shop
+    return;
+  }
+  history.replaceState({ product: slug }, '', '/' + slug); // tidy ?product=… into /lova-dress
+  openedFromSite = false;
+  openOverlay(product);
+}
+
+window.addEventListener('popstate', function () {
+  const product = productsBySlug.get(slugFromAddress());
+  if (product) openOverlay(product);
+  else closeOverlay(true);
 });
 
 
-// ---------- Order form ----------
+// ---------- Order form (unfolds inside the product view) ----------
 
-const orderView = document.querySelector('.order-view');
-const orderForm = orderView.querySelector('.order-form');
-const orderImage = orderView.querySelector('.order-image');
-const formStatus = orderView.querySelector('.form-status');
-const otherHint = orderView.querySelector('.other-hint');
-const sizeOptions = orderView.querySelector('.size-options');
+const orderForm = overlay.querySelector('.order-form');
+const orderFields = orderForm.querySelector('.order-fields');
+const orderButton = orderForm.querySelector('.order-button');
+const formStatus = orderForm.querySelector('.form-status');
+const otherHint = orderForm.querySelector('.other-hint');
+const sizeOptions = orderForm.querySelector('.size-options');
 
 function checkedValue(name) {
   const input = orderForm.querySelector('input[name="' + name + '"]:checked');
@@ -336,67 +425,67 @@ function renderSizes(sizing) {
   });
 }
 
-function openOrder(product) {
-  const name = product.querySelector('.product-title').textContent;
-  const price = product.querySelector('.product-price').textContent;
+function setOrderOpen(open) {
+  orderFields.classList.toggle('open', open);
+  orderFields.inert = !open;
+  orderButton.textContent = open ? 'Send request' : 'Order';
+}
 
-  // First product image in the top left corner
-  orderImage.innerHTML = '';
-  const first = product.querySelector('.slide');
-  if (first) orderImage.appendChild(first.cloneNode(true));
-
-  orderView.querySelector('.order-summary-name').textContent = name;
-  orderView.querySelector('.order-summary-price').textContent = price;
-
+// A fresh, folded form for this product
+function resetOrder(product) {
+  const p = product.data;
   orderForm.reset();
-  renderSizes(product.dataset.sizing);
-  orderForm.elements.product.value = name;
-  orderForm.elements.price.value = price;
+  renderSizes(p.sizing || 'two');
+  orderForm.elements.product.value = p.name;
+  orderForm.elements.price.value = formatPrice(p.price);
   formStatus.textContent = '';
   updateOther();
-
-  orderView.hidden = false;
-  orderView.scrollTop = 0;
+  setOrderOpen(false);
 }
 
-function closeOrder() {
-  orderView.hidden = true;
-}
-
-orderView.querySelector('.order-back').addEventListener('click', closeOrder);
+// The first press on Order unfolds the form (the button slides down);
+// once it's open, the same button sends the request.
+orderButton.addEventListener('click', function (e) {
+  if (orderFields.classList.contains('open')) return; // normal submit
+  e.preventDefault();
+  setOrderOpen(true);
+  orderForm.elements.name.focus({ preventScroll: true });
+});
 
 orderForm.addEventListener('submit', function (e) {
   e.preventDefault();
 
   const data = Object.fromEntries(new FormData(orderForm));
   data._subject = 'Order request: ' + data.product;
-  data._template = 'table';
   data._replyto = data.email; // Emma can hit "Reply" to answer the customer directly
 
-  const button = orderForm.querySelector('button[type="submit"]');
-  button.disabled = true;
+  orderButton.disabled = true;
   formStatus.textContent = 'Sending…';
 
-  fetch('https://formsubmit.co/ajax/' + ORDER_EMAIL, {
+  fetch('https://formspree.io/f/' + FORMSPREE_FORM_ID, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
     body: JSON.stringify(data)
   })
-    .then(function (res) { return res.json(); })
     .then(function (res) {
-      if (String(res.success) !== 'true') throw new Error(res.message);
+      return res.json().catch(function () { return {}; }).then(function (body) {
+        if (!res.ok) throw new Error((body.errors || []).map(function (err) { return err.message; }).join(', '));
+      });
+    })
+    .then(function () {
       formStatus.textContent = 'Thank you! Your request has been sent. I will get back to you soon.';
       orderForm.reset();
       orderForm.elements.product.value = data.product;
       orderForm.elements.price.value = data.price;
       updateOther();
     })
-    .catch(function () {
+    .catch(function (err) {
+      console.error('Order request failed:', err);
       formStatus.textContent = 'Something went wrong. Please try again' +
         (CONTACT_EMAIL ? ', or email ' + CONTACT_EMAIL + ' directly.' : '.');
     })
     .finally(function () {
-      button.disabled = false;
+      orderButton.disabled = false;
     });
 });
 
@@ -404,12 +493,10 @@ orderForm.addEventListener('submit', function (e) {
 // ---------- Keyboard ----------
 
 document.addEventListener('keydown', function (e) {
-  if (!orderView.hidden) {
-    if (e.key === 'Escape') closeOrder();
-    return;
-  }
   if (overlay.hidden) return;
   if (e.key === 'Escape') closeOverlay();
+  // Arrow keys change image, except while typing in the form
+  if (e.target.closest && e.target.closest('input, textarea')) return;
   if (e.key === 'ArrowLeft') step(overlayTrack, -1);
   if (e.key === 'ArrowRight') step(overlayTrack, 1);
 });

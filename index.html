@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Emma Carling</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
@@ -12,7 +12,7 @@
   <header class="landing">
     <!-- Image or video from content/landing.json -->
     <div class="landing-media"></div>
-    <h1 class="landing-title"><img class="landing-logo" src="SVG/EmmaCarling.svg" alt="Emma Carling"></h1>
+    <h1 class="landing-title"><img class="landing-logo" src="/SVG/EmmaCarling.svg" alt="Emma Carling"></h1>
   </header>
 
   <!-- SHOP -->
@@ -40,84 +40,70 @@
     </div>
   </footer>
 
-  <!-- PRODUCT OVERLAY (filled by script.js when a product is clicked) -->
+  <!-- PRODUCT VIEW (filled by script.js when a product is opened).
+       Each product has its own address, e.g. emmacarling.com/lova-dress -->
   <div class="overlay" hidden>
-    <button class="overlay-close" aria-label="Close"></button>
-    <div class="overlay-info"></div>
+    <button class="overlay-close" type="button" aria-label="Close"></button>
+
     <div class="overlay-gallery">
       <div class="product-track overlay-track"></div>
       <div class="dots"></div>
-      <button class="arrow prev" aria-label="Previous image"></button>
-      <button class="arrow next" aria-label="Next image"></button>
+      <button class="arrow prev" type="button" aria-label="Previous image"></button>
+      <button class="arrow next" type="button" aria-label="Next image"></button>
     </div>
-  </div>
 
-  <!-- ORDER FORM (opened from the Order button in the product overlay) -->
-  <div class="order-view" hidden>
-    <button class="order-back" type="button">&larr; Back</button>
+    <!-- Product details. The Order button unfolds the order form right here. -->
+    <form class="overlay-info order-form">
+      <h2 class="product-title"></h2>
+      <p class="product-price"></p>
+      <p class="product-material"></p>
 
-    <div class="order-left">
-      <div class="order-summary">
-        <div class="order-image"></div>
-        <div class="order-summary-text">
-          <p class="order-summary-name"></p>
-          <p class="order-summary-price"></p>
+      <!-- Folded away until Order is pressed -->
+      <div class="fold order-fields" inert>
+        <div class="fold-inner">
+          <h3 class="order-heading">Order request</h3>
+
+          <label class="field">
+            <span>Full name</span>
+            <input type="text" name="name" required autocomplete="name">
+          </label>
+
+          <label class="field">
+            <span>Email</span>
+            <input type="email" name="email" required autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false">
+          </label>
+
+          <fieldset class="field">
+            <legend>Size</legend>
+            <div class="options size-options"></div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Colour</legend>
+            <div class="options colour-options">
+              <label class="option swatch"><input type="radio" name="colour" value="Other (see message)" required><span><i class="rainbow"></i>Other</span></label>
+            </div>
+            <p class="field-hint other-hint" hidden>Please describe the colour you want in the message below.</p>
+          </fieldset>
+
+          <label class="field">
+            <span>Message</span>
+            <textarea name="message" rows="5" placeholder="Anything I should know? Measurements, questions, wishes…"></textarea>
+          </label>
+
+          <input type="hidden" name="product">
+          <input type="hidden" name="price">
         </div>
       </div>
 
-      <!-- Text from content/order-info.json -->
-      <div class="order-terms">
-        <h3 class="terms-heading1"></h3>
-        <p class="terms-text1"></p>
+      <!-- Shipping, returns, care… (content/order-info.json) -->
+      <div class="info-menu"></div>
 
-        <h3 class="terms-heading2"></h3>
-        <p class="terms-text2"></p>
-      </div>
-    </div>
-
-    <form class="order-form">
-      <h3 class="order-heading">Order request</h3>
-
-      <label class="field">
-        <span>Full name</span>
-        <input type="text" name="name" required autocomplete="name">
-      </label>
-
-      <label class="field">
-        <span>Email</span>
-        <input type="email" name="email" required autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false">
-      </label>
-
-      <label class="field">
-        <span>Product</span>
-        <input type="text" name="product" readonly>
-      </label>
-
-      <fieldset class="field">
-        <legend>Size</legend>
-        <div class="options size-options"></div>
-      </fieldset>
-
-      <fieldset class="field">
-        <legend>Colour</legend>
-        <div class="options colour-options">
-          <label class="option swatch"><input type="radio" name="colour" value="Other (see message)" required><span><i class="rainbow"></i>Other</span></label>
-        </div>
-        <p class="field-hint other-hint" hidden>Please describe the colour you want in the message below.</p>
-      </fieldset>
-
-      <label class="field">
-        <span>Message</span>
-        <textarea name="message" rows="5" placeholder="Anything I should know? Measurements, questions, wishes…"></textarea>
-      </label>
-
-      <input type="hidden" name="price">
-
-      <button class="order-button" type="submit">Send request</button>
+      <button class="order-button" type="submit">Order</button>
       <p class="form-status" role="status"></p>
     </form>
   </div>
 
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
 </body>
 </html>
