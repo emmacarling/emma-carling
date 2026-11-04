@@ -32,7 +32,7 @@
   /* ---- Landing page on computers ----
      Zoom of the video (and its still image): 1 = not zoomed, 1.2 = 20% closer.
      Zoom centre: the point it zooms in towards, across and down (50% 50% = middle). */
-  --landing-zoom-desktop: 1;
+  --landing-zoom-desktop: 2;
   --landing-zoom-desktop-centre: 50% 58%;
 }
 
