@@ -152,6 +152,7 @@ function renderLanding(c) {
   // A video with a still image: show the still as a plain image, with the video
   // invisible on top until it really plays (see .landing-video in style.css)
   const still = mediaElement(poster, 'landing-image', '');
+  if (mobile) still.classList.add('mobile-version');
   media.classList.add('landing-video', 'waiting');
   media.addEventListener('playing', function () { media.classList.remove('waiting'); }, { once: true });
   placeholder.replaceWith(still);
