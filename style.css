@@ -26,8 +26,8 @@
      Zoom of the video: 1 = not zoomed, 1.2 = 20% closer. More zoom hides
      more of the white sky behind the logo, but crops the person tighter.
      Logo width: share of the screen width (e.g. 50vw = 50%). */
-  --landing-zoom-mobile: 1.2;
-  --landing-logo-mobile: 48vw;
+  --landing-zoom-mobile: 1.18;
+  --landing-logo-mobile: 51vw;
 
   /* ---- Landing page on computers ----
      Zoom of the video (and its still image): 1 = not zoomed, 1.2 = 20% closer.
@@ -471,7 +471,7 @@ video::-webkit-media-controls-overlay-play-button {
   text-underline-offset: 0.2em;
 }
 .info-text .fold-inner {
-  padding-right: 10vw; /* keeps the paragraphs from running too wide */
+  padding-right: 3.2vw; /* keeps the paragraphs from running too wide */
   font-size: 0.8125rem;
 }
 .info-text p {
@@ -810,6 +810,9 @@ body.no-scroll .contact {
   /* As tall as fits with the previews, name, price and Order button under
      it on the first screen (--under-image is measured in script.js) */
   .overlay-track { height: max(45svh, calc(100svh - var(--under-image, 30svh) - var(--gap))); }
+  /* The whole photo shows, top to bottom, with white at the sides if
+     it's narrower than the screen (instead of cropping it) */
+  .overlay-track .slide { object-fit: contain; }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
   .thumbs {
     order: 2;
