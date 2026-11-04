@@ -372,39 +372,9 @@ function openOverlay(product) {
   document.body.classList.add('no-scroll');
   document.title = p.name + ' – Emma Carling';
 
-  fitImage();
-
   // Start on the same image the visitor was looking at
   overlayTrack.scrollLeft = current * overlayTrack.clientWidth;
   updateThumbs();
-}
-
-// Phones: the image is as tall as it can be while the Order button still
-// shows on the first screen, above Safari's address bar, however long the
-// product's name is. Measures what's between the image and the button.
-function fitImage() {
-  if (!phoneScreen.matches || overlay.hidden) return;
-  const under = orderButton.getBoundingClientRect().bottom - overlayTrack.getBoundingClientRect().bottom;
-  overlay.style.setProperty('--under-image', Math.ceil(under) + 'px');
-  fitSlides();
-}
-window.addEventListener('resize', fitImage);
-
-// Phones: every photo fills the image area's full height and is never cut
-// at the top or bottom. A photo wider than the area is cut at the sides
-// instead (marked .wide, see style.css).
-function fitSlides() {
-  const box = overlayTrack.clientWidth / overlayTrack.clientHeight;
-  overlayTrack.querySelectorAll('.slide').forEach(function (slide) {
-    const w = slide.naturalWidth || slide.videoWidth;
-    const h = slide.naturalHeight || slide.videoHeight;
-    if (!w || !h) {
-      // Not loaded yet: check again once it is
-      slide.addEventListener(slide.tagName === 'VIDEO' ? 'loadedmetadata' : 'load', fitSlides, { once: true });
-      return;
-    }
-    slide.classList.toggle('wide', w / h > box);
-  });
 }
 
 // Outline the preview of the image currently in view

@@ -807,14 +807,9 @@ body.no-scroll .contact {
     padding: 0 var(--gap) var(--gap); /* the image starts at the top edge */
   }
   .overlay-gallery { order: 1; position: relative; top: auto; height: auto; }
-  /* As tall as fits with the previews, name, price and Order button under
-     it on the first screen (--under-image is measured in script.js) */
-  .overlay-track { height: max(45svh, calc(100svh - var(--under-image, 30svh) - var(--gap))); }
-  /* Every photo fills the full height and is never cut at the top or
-     bottom: a narrower photo gets white at the sides, a wider one is cut
-     at the sides (.wide is set in script.js) */
-  .overlay-track .slide { object-fit: contain; }
-  .overlay-track .slide.wide { object-fit: cover; }
+  /* Full width, and tall enough for a whole 3:4 photo, so photos are
+     never cut at the top or bottom (a wider photo is cut at the sides) */
+  .overlay-track { height: auto; aspect-ratio: 3 / 4; }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
   .thumbs {
     order: 2;
