@@ -9,6 +9,9 @@ let CONTACT_EMAIL = 'emmacarling2@gmail.com';
 // How many products go above the featured image
 const PRODUCTS_ABOVE_FEATURE = 8;
 
+// Phone-sized screens (same width as the mobile layout in style.css)
+const phoneScreen = matchMedia('(max-width: 700px)');
+
 const SIZES = {
   one: ['One size'],
   two: ['Small / Medium', 'Large / X-Large']
@@ -133,17 +136,22 @@ function renderProducts(products) {
   bottom.hidden = !bottom.children.length;
 }
 
+// Phones get the mobile version if there is one, otherwise the desktop one
 function renderLanding(c) {
   const placeholder = document.querySelector('.landing-media');
-  if (!c.media) return;
-  const media = mediaElement(c.media, 'landing-image', '', c.poster);
-  if (media.tagName !== 'VIDEO' || !c.poster) {
+  const mobile = phoneScreen.matches && c.media_mobile;
+  const src = mobile ? c.media_mobile : c.media;
+  const poster = mobile ? (c.poster_mobile || c.poster) : c.poster;
+  if (!src) return;
+  const media = mediaElement(src, 'landing-image', '', poster);
+  if (mobile) media.classList.add('mobile-version');
+  if (media.tagName !== 'VIDEO' || !poster) {
     placeholder.replaceWith(media);
     return;
   }
   // A video with a still image: show the still as a plain image, with the video
   // invisible on top until it really plays (see .landing-video in style.css)
-  const still = mediaElement(c.poster, 'landing-image', '');
+  const still = mediaElement(poster, 'landing-image', '');
   media.classList.add('landing-video', 'waiting');
   media.addEventListener('playing', function () { media.classList.remove('waiting'); }, { once: true });
   placeholder.replaceWith(still);
@@ -373,9 +381,8 @@ function openOverlay(product) {
 // Phones: the image is as tall as it can be while the Order button still
 // shows on the first screen, above Safari's address bar, however long the
 // product's name is. Measures what's between the image and the button.
-const phone = matchMedia('(max-width: 700px)');
 function fitImage() {
-  if (!phone.matches || overlay.hidden) return;
+  if (!phoneScreen.matches || overlay.hidden) return;
   const under = orderButton.getBoundingClientRect().bottom - overlayTrack.getBoundingClientRect().bottom;
   overlay.style.setProperty('--under-image', Math.ceil(under) + 'px');
 }

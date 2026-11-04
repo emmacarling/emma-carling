@@ -748,10 +748,10 @@ body.no-scroll .contact {
 @media (max-width: 700px) {
   :root { --gap: 0.7rem; --text-inset: 0; }
 
-  /* Landing video: the person is centred, and the white sky in the top left
-     corner is zoomed out of view so the logo sits on the dark mountain.
+  /* Landing video on phones when there's no mobile version: the wide
+     desktop video, cropped so the person is centred.
      - object-position: which part of the video is shown; the first value
-       moves it sideways (the person is a bit left of centre in the video)
+       moves it sideways (the person is a bit right of centre in the video)
      - scale: how much it's zoomed in (--landing-zoom-mobile at the top);
        origin: the point the zoom is centred on (x y), here the person, so
        she stays in the middle
@@ -764,9 +764,14 @@ body.no-scroll .contact {
     height: calc(100svh - 4rem);
   }
   video.landing-image {
-    object-position: 28% 58%;
+    object-position: 46% 50%;
     transform: scale(var(--landing-zoom-mobile)); /* set at the top of this file */
     transform-origin: 50% 90%;
+  }
+  /* A mobile version from the CMS is already framed for phones */
+  video.landing-image.mobile-version {
+    object-position: 50% 50%;
+    transform: none;
   }
   .landing-logo { width: var(--landing-logo-mobile); }
   .product-grid { grid-template-columns: repeat(2, 1fr); }

@@ -1,4 +1,6 @@
 {
   "media": "/images/uploads/landscapewidec.mp4",
-  "poster": "/images/uploads/landingpagewidestill.jpg"
+  "poster": "/images/uploads/landingpagewidestill.jpg",
+  "media_mobile": "/images/uploads/landingpage-mobile.mp4",
+  "poster_mobile": "/images/uploads/landingpage-mobile-still.jpg"
 }

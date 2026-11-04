@@ -60,15 +60,25 @@ collections:
         label: "Landing page"
         file: "content/landing.json"
         fields:
-          - label: "Image or video"
+          - label: "Desktop: image or video"
             name: "media"
             widget: "file"
-            hint: "Fills the whole first screen. For video, use an .mp4 file (plays muted and on repeat)."
-          - label: "Still image while the video loads"
+            hint: "Fills the whole first screen. Also used on phones if there's no mobile version below. For video, use an .mp4 file (plays muted and on repeat), at most 1920 pixels wide and a few MB."
+          - label: "Desktop: still image while the video loads"
             name: "poster"
             widget: "image"
             required: false
-            hint: "Only used with a video. Also shown on phones in low-power mode."
+            hint: "Only used with a video. Also shown in low-power mode."
+          - label: "Mobile: image or video (optional)"
+            name: "media_mobile"
+            widget: "file"
+            required: false
+            hint: "A tall (portrait) version for phones. Leave empty to use the desktop one on phones too."
+          - label: "Mobile: still image while the video loads (optional)"
+            name: "poster_mobile"
+            widget: "image"
+            required: false
+            hint: "Only used with a mobile video. Leave empty to use the desktop still image."
 
       - name: "feature"
         label: "Feature slide (between the product grids)"
