@@ -808,8 +808,9 @@ body.no-scroll .contact {
   }
   .overlay-gallery { order: 1; position: relative; top: auto; height: auto; }
   /* Full width, and tall enough for a whole 3:4 photo, so photos are
-     never cut at the top or bottom (a wider photo is cut at the sides) */
-  .overlay-track { height: auto; aspect-ratio: 3 / 4; }
+     never cut at the top or bottom (a wider photo is cut at the sides).
+     Never shorter than half the screen, so photos don't get too small. */
+  .overlay-track { height: auto; aspect-ratio: 3 / 4; min-height: 50vh; }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
   .thumbs {
     order: 2;
