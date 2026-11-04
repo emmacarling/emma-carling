@@ -26,8 +26,8 @@
      Zoom of the video: 1 = not zoomed, 1.2 = 20% closer. More zoom hides
      more of the white sky behind the logo, but crops the person tighter.
      Logo width: share of the screen width (e.g. 50vw = 50%). */
-  --landing-zoom-mobile: 1.25;
-  --landing-logo-mobile: 50vw;
+  --landing-zoom-mobile: 1.2;
+  --landing-logo-mobile: 48vw;
 
   /* ---- Landing page on computers ----
      Zoom of the video (and its still image): 1 = not zoomed, 1.2 = 20% closer.
