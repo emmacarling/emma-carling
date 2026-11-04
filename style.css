@@ -810,9 +810,11 @@ body.no-scroll .contact {
   /* As tall as fits with the previews, name, price and Order button under
      it on the first screen (--under-image is measured in script.js) */
   .overlay-track { height: max(45svh, calc(100svh - var(--under-image, 30svh) - var(--gap))); }
-  /* The whole photo shows, top to bottom, with white at the sides if
-     it's narrower than the screen (instead of cropping it) */
+  /* Every photo fills the full height and is never cut at the top or
+     bottom: a narrower photo gets white at the sides, a wider one is cut
+     at the sides (.wide is set in script.js) */
   .overlay-track .slide { object-fit: contain; }
+  .overlay-track .slide.wide { object-fit: cover; }
   .overlay-gallery { width: 100%; aspect-ratio: auto; }
   .thumbs {
     order: 2;
