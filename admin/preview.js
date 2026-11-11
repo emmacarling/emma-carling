@@ -105,7 +105,7 @@
       slides.length
         ? note(slides.length === 1
             ? 'One slide: it stays put on the site.'
-            : slides.length + ' slides: on the site they fade into each other, ' + seconds + ' seconds each.')
+            : slides.length + ' slides: on computers they show three at a time, side by side; every ' + seconds + ' seconds one column fades to another slide.')
         : note('No slides – this space is hidden on the site.'),
       slides.map(function (src, i) {
         return h('div', { className: 'feature', key: i },

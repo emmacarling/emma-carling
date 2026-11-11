@@ -159,29 +159,59 @@ function renderLanding(c) {
   still.after(media);
 }
 
-// Feature slide: the images/videos fade into each other in a loop
-function renderFeature(c) {
-  const feature = document.querySelector('.feature');
-  const slides = (c.slides || (c.media ? [c.media] : [])).filter(Boolean);
-  const seconds = Number(c.seconds) || 4;
+// Feature: three columns side by side on computers (one on phones), all
+// taking images from the same list. Every few seconds one column (in turn,
+// never all at once) fades to an image that isn't showing in any column.
+let featureContent = null;
+let featureTimer = null;
 
+function renderFeature(c) {
+  featureContent = c;
+  const feature = document.querySelector('.feature');
+  const pool = (c.slides || (c.media ? [c.media] : [])).filter(Boolean);
+  const seconds = Number(c.seconds) || 6;
+  const count = Math.min(phoneScreen.matches ? 1 : 3, pool.length);
+
+  clearInterval(featureTimer);
   feature.innerHTML = '';
-  feature.hidden = !slides.length;
-  slides.forEach(function (src, i) {
-    const slide = mediaElement(src, 'feature-image', '');
-    if (i === 0) slide.classList.add('active');
-    feature.appendChild(slide);
+  feature.hidden = !pool.length;
+  feature.style.setProperty('--feature-columns', count);
+
+  // Start with a different image in each column
+  const showing = pool.slice(0, count);
+  const frames = showing.map(function (src) {
+    const frame = el('div', 'feature-frame');
+    const media = mediaElement(src, 'feature-image active', '');
+    frame.appendChild(media);
+    feature.appendChild(frame);
+    return frame;
   });
 
-  if (slides.length < 2) return;
-  let current = 0;
-  setInterval(function () {
-    const items = feature.children;
-    items[current].classList.remove('active');
-    current = (current + 1) % items.length;
-    items[current].classList.add('active');
+  if (pool.length <= count) return; // nothing left to swap in
+  let next = 0;
+  featureTimer = setInterval(function () {
+    const free = pool.filter(function (src) { return showing.indexOf(src) === -1; });
+    const src = free[Math.floor(Math.random() * free.length)];
+    const frame = frames[next];
+    const old = frame.querySelector('.feature-image.active');
+    const media = mediaElement(src, 'feature-image', '');
+    frame.appendChild(media);
+    showing[next] = src;
+    // Next frame, so the new image starts invisible and then fades in
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        media.classList.add('active');
+        old.classList.remove('active');
+        setTimeout(function () { old.remove(); }, 1500); // after the fade
+      });
+    });
+    next = (next + 1) % frames.length;
   }, seconds * 1000);
 }
+// Phone ↔ computer width: rebuild with the right number of columns
+phoneScreen.addEventListener('change', function () {
+  if (featureContent) renderFeature(featureContent);
+});
 
 // Shipping, returns, care…: one row per section under the Order button,
 // each folding out its text. Sections without text are left out.
@@ -310,9 +340,14 @@ function setupProduct(product) {
 }
 
 
-// Tapping the landing page scrolls down a bit, hinting at the shop below
+// Tapping the landing page scrolls down until the first row of names and
+// prices is in view. Always to the same place, however often it's tapped.
 document.querySelector('.landing').addEventListener('click', function () {
-  window.scrollBy({ top: window.innerHeight * 0.60, behavior: 'smooth' });
+  const meta = document.querySelector('#grid-top .product-meta');
+  if (!meta) return;
+  const bottom = meta.getBoundingClientRect().bottom + window.scrollY;
+  const gap = parseFloat(getComputedStyle(document.querySelector('.shop')).paddingTop) || 0;
+  window.scrollTo({ top: Math.max(0, bottom + gap - window.innerHeight), behavior: 'smooth' });
 });
 
 
@@ -328,7 +363,6 @@ let openedFromSite = false; // the product's address was added to the history by
 function openOverlay(product) {
   const p = product.data;
   const track = product.querySelector('.product-track');
-  const current = Math.round(track.scrollLeft / track.clientWidth);
   currentProduct = product;
 
   // The product's images and details
@@ -372,8 +406,8 @@ function openOverlay(product) {
   document.body.classList.add('no-scroll');
   document.title = p.name + ' – Emma Carling';
 
-  // Start on the same image the visitor was looking at
-  overlayTrack.scrollLeft = current * overlayTrack.clientWidth;
+  // Always start on the first image
+  overlayTrack.scrollLeft = 0;
   updateThumbs();
 }
 

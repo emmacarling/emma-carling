@@ -167,24 +167,29 @@ button:focus:not(:focus-visible) {
   display: none;
 }
 
-/* Feature slide: the first slide sets the height, the others lie on top
-   of it, and the active one fades in */
+/* Feature: columns side by side with the same spacing as the product
+   grid (3 on computers, 1 on phones; set in script.js). In each column
+   the images lie on top of each other and the active one fades in. */
 .feature {
+  display: grid;
+  grid-template-columns: repeat(var(--feature-columns, 3), 1fr);
+  gap: var(--gap);
+}
+.feature-frame {
   position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  max-height: 80vh;
 }
 .feature-image {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
-  max-height: 80vh;
+  height: 100%;
   object-fit: cover;
   opacity: 0;
   transition: opacity 1.2s ease; /* fade duration */
-}
-.feature-image + .feature-image {
-  position: absolute;
-  inset: 0;
-  height: 100%;
 }
 .feature-image.active {
   opacity: 1;
