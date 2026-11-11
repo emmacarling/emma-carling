@@ -173,7 +173,7 @@ button:focus:not(:focus-visible) {
 .feature {
   display: grid;
   grid-template-columns: repeat(var(--feature-columns, 3), 1fr);
-  gap: var(--gap);
+  gap: 0;
 }
 .feature-frame {
   position: relative;
