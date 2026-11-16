@@ -39,7 +39,8 @@
   /* All text */
   --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
   /* Product name in the product view (Director, loaded below) */
-  --font-title: "Director", Georgia, serif;
+    --font-title:  var(--font);
+  --font-title-weight: 400;
   /* Running text: the footer, the texts that open under the Order button
      (not their headings), and the grey price and material text */
   --font-text: var(--font);
@@ -585,7 +586,7 @@ video::-webkit-media-controls-overlay-play-button {
 .product-title {
   margin: 0;
   font-family: var(--font-title);
-  font-weight: 400; /* Director comes in 300 (light), 400 and 700 (bold) */
+  font-weight: var(--font-title-weight); /* set at the top of this file */
   font-size: 2.5rem;
   line-height: 1.1;
 }
@@ -839,7 +840,7 @@ body.covered .contact {
 
 .contact .contact-intro {
   grid-column: 1 / 3;
-  max-width: 29rem; /* never wider than this, even on big screens */
+  padding-right: 5rem; 
 }
 
 .contact-info {
@@ -943,7 +944,7 @@ body.covered .contact {
   }
 
   /* Phones: contact details under the text */
-  .contact { display: flex; flex-direction: column; gap: 3rem; }
+  .contact { display: flex; flex-direction: column; gap: 3rem; padding-right: 0rem;  }
 
   /* Price under the name instead of beside it.
      Two tighter lines take the same height as one line + the space under
