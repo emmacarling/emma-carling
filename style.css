@@ -368,6 +368,9 @@ video::-webkit-media-controls-overlay-play-button {
   z-index: 10;
   overflow-y: auto;
   overscroll-behavior: contain; /* don't scroll the shop behind it */
+  /* Space for the scrollbar is always kept free, so nothing shifts sideways
+     when the form unfolds and the view becomes scrollable */
+  scrollbar-gutter: stable;
   background: var(--bg);
   display: flex;
   align-items: flex-start;
