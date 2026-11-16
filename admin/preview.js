@@ -96,7 +96,7 @@
     );
   }
 
-  // All slides one under the other (on the site they fade into each other)
+  // All slides one under the other (on the site they take turns in three columns)
   function FeaturePreview(props) {
     const d = data(props.entry);
     const slides = (d.slides || []).filter(Boolean);
@@ -105,7 +105,7 @@
       slides.length
         ? note(slides.length === 1
             ? 'One slide: it stays put on the site.'
-            : slides.length + ' slides: on computers they show three at a time, side by side; every ' + seconds + ' seconds one column fades to another slide.')
+            : slides.length + ' slides: on computers they show three at a time, side by side; every ' + seconds + ' seconds one column switches to another slide.')
         : note('No slides – this space is hidden on the site.'),
       slides.map(function (src, i) {
         return h('div', { className: 'feature', key: i },

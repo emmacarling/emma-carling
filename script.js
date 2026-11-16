@@ -161,7 +161,7 @@ function renderLanding(c) {
 
 // Feature: three columns side by side on computers (one on phones), all
 // taking images from the same list. Every few seconds one column (in turn,
-// never all at once) fades to an image that isn't showing in any column.
+// never all at once) switches to an image that isn't showing in any column.
 let featureContent = null;
 let featureTimer = null;
 
@@ -197,14 +197,20 @@ function renderFeature(c) {
     const media = mediaElement(src, 'feature-image', '');
     frame.appendChild(media);
     showing[next] = src;
-    // Next frame, so the new image starts invisible and then fades in
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        media.classList.add('active');
-        old.classList.remove('active');
-        setTimeout(function () { old.remove(); }, 1500); // after the fade
-      });
-    });
+    // Swap instantly, but only once the new image has loaded, so the
+    // column never shows an empty frame in between
+    function swap() {
+      media.classList.add('active');
+      old.remove();
+    }
+    if (media.tagName === 'VIDEO') {
+      if (media.readyState >= 2) swap();
+      else media.addEventListener('loadeddata', swap, { once: true });
+    } else if (media.complete) {
+      swap();
+    } else {
+      media.addEventListener('load', swap, { once: true });
+    }
     next = (next + 1) % frames.length;
   }, seconds * 1000);
 }

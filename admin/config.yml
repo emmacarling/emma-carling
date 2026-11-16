@@ -89,7 +89,7 @@ collections:
             widget: "list"
             label_singular: "slide"
             required: false
-            hint: "Images or .mp4 videos. On computers they show in three columns side by side (one column on phones); every few seconds one column fades to an image that isn't already showing. Add at least 4 so there's something to change to. With none, the section is hidden."
+            hint: "Images or .mp4 videos. On computers they show in three columns side by side (one column on phones); every few seconds one column switches to an image that isn't already showing. Add at least 4 so there's something to change to. With none, the section is hidden."
             field: { label: "Image or video", name: "media", widget: "file" }
           - label: "Seconds between changes"
             name: "seconds"

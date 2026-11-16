@@ -169,7 +169,8 @@ button:focus:not(:focus-visible) {
 
 /* Feature: columns side by side with the same spacing as the product
    grid (3 on computers, 1 on phones; set in script.js). In each column
-   the images lie on top of each other and the active one fades in. */
+   the images lie on top of each other and only the active one shows;
+   they switch instantly, without a fade. */
 .feature {
   display: grid;
   grid-template-columns: repeat(var(--feature-columns, 3), 1fr);
@@ -189,7 +190,6 @@ button:focus:not(:focus-visible) {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 1.2s ease; /* fade duration */
 }
 .feature-image.active {
   opacity: 1;
