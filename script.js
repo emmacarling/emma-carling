@@ -10,7 +10,9 @@ let CONTACT_EMAIL = 'emmacarling2@gmail.com';
 const PRODUCTS_ABOVE_FEATURE = 8;
 
 // Phone-sized screens (same width as the mobile layout in style.css)
-const phoneScreen = matchMedia('(max-width: 700px)');
+// Below this width the site uses the phone layout. Keep it the same as the
+// 900px / 901px widths in style.css.
+const phoneScreen = matchMedia('(max-width: 900px)');
 
 const SIZES = {
   one: ['One size'],

@@ -113,7 +113,7 @@ button:focus:not(:focus-visible) {
 }
 
 /* Computers: zoom set at the top of this file (phones have their own below) */
-@media (min-width: 701px) {
+@media (min-width: 901px) {
   .landing-image {
     transform: scale(var(--landing-zoom-desktop));
     transform-origin: var(--landing-zoom-desktop-centre);
@@ -610,7 +610,7 @@ video::-webkit-media-controls-overlay-play-button {
   font: inherit;
 }
 /* Phones and tablets: 16px text in fields, or iPhones zoom in when you tap one */
-@media (hover: none), (max-width: 700px) {
+@media (hover: none), (max-width: 900px) {
   .field input[type="email"],
   .field input[type="text"],
   .field textarea {
@@ -756,7 +756,7 @@ body.no-scroll .contact {
 
 .contact .contact-intro {
   grid-column: 1 / 3;
-  max-width: 32.5rem; /* never wider than this, even on big screens */
+  max-width: 29rem; /* never wider than this, even on big screens */
 }
 
 .contact-info {
@@ -775,7 +775,9 @@ body.no-scroll .contact {
 
 /* ---------- Smaller screens ---------- */
 
-@media (max-width: 700px) {
+/* Phone layout below 900px wide. If you change it, change the other
+   900px / 901px widths in this file and the one in script.js too. */
+@media (max-width: 900px) {
   :root { --gap: 0.7rem; --text-inset: 0; }
 
   /* Landing video on phones when there's no mobile version: the wide
