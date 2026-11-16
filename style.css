@@ -378,24 +378,48 @@ video::-webkit-media-controls-overlay-play-button {
   /* The shop grid's margin above and at the sides; the image reaches the bottom */
   padding: var(--gap) var(--gap) 0;
 }
-/* Sliding up from the bottom when opened, back down when closed (script.js) */
-.overlay.slide-in {
-  animation: overlay-up var(--overlay-slide) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+/* Sliding up from the bottom when opened, back down when closed (script.js).
+   It moves its real position (top/bottom), not just its picture (transform):
+   iPhone Safari colours the strip behind the status bar after whatever
+   touches the top of the screen, so this way the strip only turns white
+   when the view actually gets there. The X moves along with it. */
+.overlay.slide-in,
+.overlay.slide-in .overlay-close {
+  animation-duration: var(--overlay-slide);
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-fill-mode: both;
 }
-.overlay.slide-out {
-  animation: overlay-down var(--overlay-slide) cubic-bezier(0.6, 0, 0.8, 0.4) both;
+.overlay.slide-out,
+.overlay.slide-out .overlay-close {
+  animation-duration: var(--overlay-slide);
+  animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  animation-fill-mode: both;
 }
+.overlay.slide-in { animation-name: overlay-up; }
+.overlay.slide-out { animation-name: overlay-down; }
+.overlay.slide-in .overlay-close { animation-name: close-up; }
+.overlay.slide-out .overlay-close { animation-name: close-down; }
 @keyframes overlay-up {
-  from { transform: translateY(100%); }
-  to { transform: none; }
+  from { top: 100%; bottom: -100%; }
+  to { top: 0; bottom: 0; }
 }
 @keyframes overlay-down {
-  from { transform: none; }
-  to { transform: translateY(100%); }
+  from { top: 0; bottom: 0; }
+  to { top: 100%; bottom: -100%; }
+}
+@keyframes close-up {
+  from { top: 100%; }
+  to { top: 0; }
+}
+@keyframes close-down {
+  from { top: 0; }
+  to { top: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .overlay.slide-in,
-  .overlay.slide-out { animation: none; }
+  .overlay.slide-out,
+  .overlay.slide-in .overlay-close,
+  .overlay.slide-out .overlay-close { animation: none; }
 }
 .overlay[hidden] {
   display: none;
@@ -623,11 +647,6 @@ video::-webkit-media-controls-overlay-play-button {
 }
 .overlay-close {
   word-spacing: 3.4px; /* widens the space between X and CLOSE to ~7px */
-}
-/* While the view slides (script.js), keep the X where it is when still */
-.overlay.slide-in .overlay-close,
-.overlay.slide-out .overlay-close {
-  margin-right: calc(-1 * var(--overlay-scrollbar, 0px));
 }
 .overlay-close:hover {
   text-decoration: underline;

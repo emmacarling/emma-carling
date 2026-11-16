@@ -455,16 +455,9 @@ function slideTime() {
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--overlay-slide')) * 1000 || 0;
 }
 
-// While the view slides, its X sits next to the view's scrollbar space instead
-// of at the screen edge; style.css moves it back by this much so it doesn't jump
-function markScrollbar() {
-  overlay.style.setProperty('--overlay-scrollbar', (overlay.offsetWidth - overlay.clientWidth) + 'px');
-}
-
 function slideIn() {
   clearTimeout(slideTimer);
   closing = false;
-  markScrollbar();
   overlay.classList.remove('slide-out');
   overlay.classList.add('slide-in');
   slideTimer = setTimeout(function () {
@@ -477,7 +470,6 @@ function closeOverlay(fromHistory) {
   if (overlay.hidden || closing) return;
   closing = true;
   clearTimeout(slideTimer);
-  markScrollbar();
   document.body.classList.remove('covered');
   overlay.classList.remove('slide-in');
   overlay.classList.add('slide-out');
