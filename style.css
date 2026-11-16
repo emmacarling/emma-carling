@@ -73,6 +73,26 @@
 html {
   background: linear-gradient(var(--landing-top) 50%, var(--bg) 50%);
 }
+/* TEST (script.js, pageViewTest): the product view as part of the page on
+   phones. The shop is set aside and the view scrolls with the page. */
+html:has(body.page-view) {
+  background: var(--bg);
+}
+body.page-view .landing,
+body.page-view .shop,
+body.page-view .contact {
+  display: none;
+}
+body.page-view .overlay {
+  position: relative;
+  inset: auto;
+  min-height: 100vh;
+  overflow: visible;
+  scrollbar-gutter: auto;
+}
+body.page-view .overlay-close {
+  position: absolute;
+}
 
 * {
   box-sizing: border-box;

@@ -411,8 +411,12 @@ function openOverlay(product) {
   overlay.hidden = false;
   overlay.scrollTop = 0;
   orderForm.scrollTop = 0;
-  lockPage(true);
-  slideIn();
+  if (document.body.classList.contains('page-view')) {
+    window.scrollTo(0, 0); // already showing a product as a page: just swap it
+  } else {
+    lockPage(true);
+    slideIn();
+  }
   document.title = p.name + ' – Emma Carling';
 
   // Always start on the first image
@@ -450,6 +454,35 @@ function lockPage(lock) {
   }
 }
 
+// TEST (phones only, this device only): once the view has slid up, it becomes
+// part of the page instead of a layer pinned over it, so it scrolls like the
+// grid and runs under iPhone Safari's status bar instead of a white bar.
+// On: emmacarling.com/?pageview=1   Off: emmacarling.com/?pageview=0
+(function () {
+  const value = new URLSearchParams(location.search).get('pageview');
+  try { if (value !== null) localStorage.setItem('pageview', value); } catch (e) {}
+})();
+function pageViewTest() {
+  try { return phoneScreen.matches && localStorage.getItem('pageview') === '1'; } catch (e) { return false; }
+}
+let shopScroll = 0; // where the shop was, to go back there on closing
+
+function enterPageView() {
+  shopScroll = window.scrollY;
+  const inView = overlay.scrollTop;
+  document.body.classList.add('page-view');
+  lockPage(false);
+  window.scrollTo(0, inView);
+}
+
+function leavePageView() {
+  const inView = window.scrollY;
+  document.body.classList.remove('page-view');
+  lockPage(true);
+  window.scrollTo(0, shopScroll);
+  overlay.scrollTop = inView;
+}
+
 function slideTime() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return 0;
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--overlay-slide')) * 1000 || 0;
@@ -463,6 +496,7 @@ function slideIn() {
   slideTimer = setTimeout(function () {
     overlay.classList.remove('slide-in');
     document.body.classList.add('covered');
+    if (pageViewTest()) enterPageView();
   }, slideTime());
 }
 
@@ -470,6 +504,7 @@ function closeOverlay(fromHistory) {
   if (overlay.hidden || closing) return;
   closing = true;
   clearTimeout(slideTimer);
+  if (document.body.classList.contains('page-view')) leavePageView();
   document.body.classList.remove('covered');
   overlay.classList.remove('slide-in');
   overlay.classList.add('slide-out');
