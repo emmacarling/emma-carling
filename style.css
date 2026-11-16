@@ -611,7 +611,7 @@ video::-webkit-media-controls-overlay-play-button {
   top: 0;
   right: 0;
   z-index: 1;
-  padding: 0.25rem 15px 0.25rem var(--gap); /* the text ends 15px from the right edge */
+  padding: 0.25rem 20px 0.25rem var(--gap); /* the text ends 20px from the right edge */
   border: none;
   background: none;
   color: var(--text);
@@ -623,6 +623,11 @@ video::-webkit-media-controls-overlay-play-button {
 }
 .overlay-close {
   word-spacing: 3.4px; /* widens the space between X and CLOSE to ~7px */
+}
+/* While the view slides (script.js), keep the X where it is when still */
+.overlay.slide-in .overlay-close,
+.overlay.slide-out .overlay-close {
+  margin-right: calc(-1 * var(--overlay-scrollbar, 0px));
 }
 .overlay-close:hover {
   text-decoration: underline;
