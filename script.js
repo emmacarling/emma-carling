@@ -159,6 +159,24 @@ function renderLanding(c) {
   media.addEventListener('playing', function () { media.classList.remove('waiting'); }, { once: true });
   placeholder.replaceWith(still);
   still.after(media);
+
+  // Low Power Mode on iPhones stops videos from starting by themselves. Safari
+  // can also show an mp4 as an image, which plays on its own like a GIF, so
+  // try that. Other browsers can't, and then the still image just stays.
+  const attempt = media.play();
+  if (attempt) attempt.catch(function () { playAsImage(src, still, mobile); });
+}
+
+function playAsImage(src, still, mobile) {
+  const img = el('img', 'landing-image landing-moving');
+  if (mobile) img.classList.add('mobile-version');
+  img.alt = '';
+  img.addEventListener('load', function () {
+    still.after(img);
+    const video = document.querySelector('video.landing-image');
+    if (video) video.remove();
+  }, { once: true });
+  img.src = src;
 }
 
 // Feature: three columns side by side on computers (one on phones), all

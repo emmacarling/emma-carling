@@ -878,7 +878,8 @@ body.covered .contact {
     height: calc(100vh - 4rem);
     height: calc(100svh - 4rem);
   }
-  video.landing-image {
+  video.landing-image,
+  img.landing-moving {
     object-position: 46% 50%;
     transform: scale(var(--landing-zoom-mobile)); /* set at the top of this file */
     transform-origin: 50% 90%;
