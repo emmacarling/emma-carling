@@ -75,8 +75,10 @@ html {
 }
 /* TEST (script.js, pageViewTest): the product view as part of the page on
    phones. The shop is set aside and the view scrolls with the page. */
+/* White, but as a gradient: a plain colour here seems to make iPhone Safari
+   fill the status bar area with it as a solid bar */
 html:has(body.page-view) {
-  background: var(--bg);
+  background: linear-gradient(var(--bg), var(--bg));
 }
 body.page-view .landing,
 body.page-view .shop,
