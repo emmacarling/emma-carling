@@ -61,6 +61,10 @@
      Zoom centre: the point it zooms in towards, across and down (50% 50% = middle). */
   --landing-zoom-desktop: 1.2;
   --landing-zoom-desktop-centre: 50% 58%;
+
+  /* How long the product view takes to slide up when it opens (and back
+     down when it closes), in seconds */
+  --overlay-slide: 0.5s;
 }
 
 /* Above the page (status bar, pull-down bounce): the landing's dark grey.
@@ -370,6 +374,25 @@ video::-webkit-media-controls-overlay-play-button {
   gap: var(--gap); /* between the previews, the image and the info column */
   /* The shop grid's margin above and at the sides; the image reaches the bottom */
   padding: var(--gap) var(--gap) 0;
+}
+/* Sliding up from the bottom when opened, back down when closed (script.js) */
+.overlay.slide-in {
+  animation: overlay-up var(--overlay-slide) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.overlay.slide-out {
+  animation: overlay-down var(--overlay-slide) cubic-bezier(0.6, 0, 0.8, 0.4) both;
+}
+@keyframes overlay-up {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+@keyframes overlay-down {
+  from { transform: none; }
+  to { transform: translateY(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .overlay.slide-in,
+  .overlay.slide-out { animation: none; }
 }
 .overlay[hidden] {
   display: none;
@@ -758,12 +781,13 @@ video::-webkit-media-controls-overlay-play-button {
 body.no-scroll {
   overflow: hidden;
 }
-/* While a product is open, hide the page behind it. Otherwise, when a phone
-   resizes the screen (keyboard, address bar), the dark landing video could
-   show through as a black area at the bottom. */
-body.no-scroll .landing,
-body.no-scroll .shop,
-body.no-scroll .contact {
+/* While a product is open (and has finished sliding up), hide the page
+   behind it. Otherwise, when a phone resizes the screen (keyboard, address
+   bar), the dark landing video could show through as a black area at the
+   bottom. */
+body.covered .landing,
+body.covered .shop,
+body.covered .contact {
   visibility: hidden;
 }
 

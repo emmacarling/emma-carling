@@ -412,6 +412,7 @@ function openOverlay(product) {
   overlay.scrollTop = 0;
   orderForm.scrollTop = 0;
   document.body.classList.add('no-scroll');
+  slideIn();
   document.title = p.name + ' – Emma Carling';
 
   // Always start on the first image
@@ -429,10 +430,41 @@ function updateThumbs() {
 overlayTrack.addEventListener('scroll', updateThumbs);
 
 // fromHistory: closed by the browser's back button, so leave the address alone
+// The product view slides up from the bottom when it opens and back down when
+// it closes (speed: --overlay-slide in style.css). The page behind is hidden
+// only once the view covers it, so it shows while the view slides.
+let slideTimer = null;
+let closing = false;
+
+function slideTime() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return 0;
+  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--overlay-slide')) * 1000 || 0;
+}
+
+function slideIn() {
+  clearTimeout(slideTimer);
+  closing = false;
+  overlay.classList.remove('slide-out');
+  overlay.classList.add('slide-in');
+  slideTimer = setTimeout(function () {
+    overlay.classList.remove('slide-in');
+    document.body.classList.add('covered');
+  }, slideTime());
+}
+
 function closeOverlay(fromHistory) {
-  if (overlay.hidden) return;
-  overlay.hidden = true;
-  document.body.classList.remove('no-scroll');
+  if (overlay.hidden || closing) return;
+  closing = true;
+  clearTimeout(slideTimer);
+  document.body.classList.remove('covered');
+  overlay.classList.remove('slide-in');
+  overlay.classList.add('slide-out');
+  slideTimer = setTimeout(function () {
+    overlay.hidden = true;
+    overlay.classList.remove('slide-out');
+    document.body.classList.remove('no-scroll');
+    closing = false;
+  }, slideTime());
   document.title = defaultTitle;
   if (fromHistory !== true && location.pathname !== '/') {
     if (openedFromSite) history.back();
