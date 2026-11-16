@@ -739,25 +739,27 @@ body.no-scroll .contact {
 
 /* ---------- Contact ---------- */
 
+/* Computers: the text about Emma on the left, her contact details in a
+   column of their own to the right of it. Both in the same text style. */
 .contact {
+  display: flex;
+  align-items: flex-start;
+  gap: 6rem;
   margin: 0 var(--gap);
   padding: 3rem var(--text-inset) 4rem;
   border-top: 1px solid var(--line);
-  font-size: 0.8125rem;
-}
-
-.contact .contact-intro {
-  max-width: 36rem;
-  margin: 0 0 3rem;
   font-size: 1rem;
   line-height: 1.6;
 }
 
+.contact .contact-intro {
+  max-width: 40rem;
+  white-space: pre-line; /* a line break typed in the CMS starts a new line */
+}
+
 .contact-info {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem 2rem;
+  flex-direction: column;
 }
 
 .contact p {
@@ -852,7 +854,10 @@ body.no-scroll .contact {
     font-size: 0.75rem;
   }
 
-  .contact-info { flex-direction: column; }
+  /* Phones: contact details under the text, and the text flows freely
+     (line breaks from the CMS only apply on computers) */
+  .contact { flex-direction: column; gap: 3rem; }
+  .contact .contact-intro { white-space: normal; }
 
   /* Price under the name instead of beside it.
      Two tighter lines take the same height as one line + the space under
