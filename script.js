@@ -411,7 +411,7 @@ function openOverlay(product) {
   overlay.hidden = false;
   overlay.scrollTop = 0;
   orderForm.scrollTop = 0;
-  document.body.classList.add('no-scroll');
+  lockPage(true);
   slideIn();
   document.title = p.name + ' – Emma Carling';
 
@@ -435,6 +435,20 @@ overlayTrack.addEventListener('scroll', updateThumbs);
 // only once the view covers it, so it shows while the view slides.
 let slideTimer = null;
 let closing = false;
+
+// Stop the page behind from scrolling. Its scrollbar disappears then, so
+// keep the scrollbar's space free, or the page would shift sideways.
+function lockPage(lock) {
+  const body = document.body;
+  if (lock && !body.classList.contains('no-scroll')) {
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+    body.style.paddingRight = scrollbar > 0 ? scrollbar + 'px' : '';
+    body.classList.add('no-scroll');
+  } else if (!lock) {
+    body.classList.remove('no-scroll');
+    body.style.paddingRight = '';
+  }
+}
 
 function slideTime() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return 0;
@@ -462,7 +476,7 @@ function closeOverlay(fromHistory) {
   slideTimer = setTimeout(function () {
     overlay.hidden = true;
     overlay.classList.remove('slide-out');
-    document.body.classList.remove('no-scroll');
+    lockPage(false);
     closing = false;
   }, slideTime());
   document.title = defaultTitle;
