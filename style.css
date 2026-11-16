@@ -19,6 +19,9 @@
   --font: "Libertinus Mono", ui-monospace, Menlo, monospace;
   /* Product name in the product view, in a medium weight */
   --font-title: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Running text: the footer, the texts that open under the Order button
+     (not their headings), and the grey price and material text */
+  --font-text: var(--font);
 
   /* The dark grey at the top of the landing video and its still image.
      Safari shows it in the status bar strip above the page, so the strip
@@ -247,6 +250,7 @@ button:focus:not(:focus-visible) {
 }
 .grid-price {
   color: var(--grey-light);
+  font-family: var(--font-text);
 }
 
 .arrow {
@@ -479,6 +483,7 @@ video::-webkit-media-controls-overlay-play-button {
   text-underline-offset: 0.2em;
 }
 .info-text .fold-inner {
+  font-family: var(--font-text);
   padding-right: 3.2vw; /* keeps the paragraphs from running too wide */
   font-size: 0.8125rem;
 }
@@ -520,6 +525,7 @@ video::-webkit-media-controls-overlay-play-button {
 
 .product-material {
   margin: 0.25rem 0 2rem;
+  font-family: var(--font-text);
   color: var(--grey-light);
   white-space: pre-line; /* line breaks typed in the CMS show as new lines */
 }
@@ -747,6 +753,7 @@ body.no-scroll .contact {
    Emma spans the first two, her contact details start at the third.
    Both in the same text style. */
 .contact {
+  font-family: var(--font-text);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: start;
