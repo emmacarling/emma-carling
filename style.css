@@ -93,6 +93,13 @@ body.page-view .overlay {
 body.page-view .overlay-close {
   position: absolute;
 }
+/* Temporary label showing the test's state (script.js, testLabel) */
+.test-label {
+  margin: 0 0 1rem;
+  padding: 0.4rem 0.5rem;
+  background: #ffe9a8;
+  font: 11px/1.4 ui-monospace, Menlo, monospace;
+}
 
 * {
   box-sizing: border-box;
@@ -952,6 +959,9 @@ body.covered .contact {
   }
   .arrow.prev { left: 0.5rem; }
   .arrow.next { right: 0.5rem; }
+  /* No arrows in the product view on phones: swipe or tap a preview instead */
+  .overlay .arrow,
+  .overlay:not(.single) .arrow { display: none; }
 
   .order-button {
     padding: 0.7rem;

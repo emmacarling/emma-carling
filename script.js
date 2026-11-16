@@ -467,6 +467,27 @@ function pageViewTest() {
 }
 let shopScroll = 0; // where the shop was, to go back there on closing
 
+// Temporary label in the product view while the test is switched on, showing
+// whether page mode really runs on this phone. Remove with the test.
+function testLabel() {
+  let flag = null;
+  try { flag = localStorage.getItem('pageview'); } catch (e) { flag = 'blocked'; }
+  let label = overlay.querySelector('.test-label');
+  if (flag !== '1') { if (label) label.remove(); return; }
+  if (!label) {
+    label = el('p', 'test-label');
+    overlay.querySelector('.product-title').before(label);
+  }
+  label.textContent =
+    'page mode: ' + (document.body.classList.contains('page-view') ? 'ON' : 'off') +
+    ' · phone width: ' + (phoneScreen.matches ? 'yes' : 'no') + ' (' + window.innerWidth + 'px)' +
+    ' · view is ' + getComputedStyle(overlay).position +
+    ' · page scroll: ' + Math.round(window.scrollY) +
+    ' · view scroll: ' + Math.round(overlay.scrollTop);
+}
+window.addEventListener('scroll', testLabel, { passive: true });
+overlay.addEventListener('scroll', testLabel, { passive: true });
+
 function enterPageView() {
   shopScroll = window.scrollY;
   const inView = overlay.scrollTop;
@@ -497,6 +518,7 @@ function slideIn() {
     overlay.classList.remove('slide-in');
     document.body.classList.add('covered');
     if (pageViewTest()) enterPageView();
+    testLabel();
   }, slideTime());
 }
 
