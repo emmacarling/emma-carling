@@ -160,11 +160,12 @@ function renderLanding(c) {
   placeholder.replaceWith(still);
   still.after(media);
 
-  // Low Power Mode on iPhones stops videos from starting by themselves. Safari
-  // can also show an mp4 as an image, which plays on its own like a GIF, so
-  // try that. Other browsers can't, and then the still image just stays.
+  // Low Power Mode on iPhones stops videos from starting by themselves, but
+  // animated images still play. So on phones, if the video is blocked, show
+  // the animated version from the CMS (an animated .webp) instead.
+  const animation = phoneScreen.matches && c.animation_mobile;
   const attempt = media.play();
-  if (attempt) attempt.catch(function () { playAsImage(src, still, mobile); });
+  if (attempt && animation) attempt.catch(function () { playAsImage(animation, still, mobile); });
 }
 
 function playAsImage(src, still, mobile) {

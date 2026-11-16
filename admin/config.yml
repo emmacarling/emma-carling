@@ -79,6 +79,11 @@ collections:
             widget: "image"
             required: false
             hint: "Only used with a mobile video. Leave empty to use the desktop still image."
+          - label: "Mobile: animated version for Low Power Mode (optional)"
+            name: "animation_mobile"
+            widget: "image"
+            required: false
+            hint: "iPhones in Low Power Mode won't play videos, but they do play animated images. An animated .webp made from the mobile video is shown then instead of the still image. Ask for a new one when you change the video."
 
       - name: "feature"
         label: "Feature slide (between the product grids)"
