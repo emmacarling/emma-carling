@@ -15,9 +15,10 @@
   --text: var(--black);
   --line: #e2e1e1; /* every line and outline: fields, buttons, info rows, footer */
 
-  --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  /* Product name in the product view (loaded from Google Fonts in index.html) */
-  --font-title: "Libertinus Mono", ui-monospace, Menlo, monospace;
+  /* All text (loaded from Google Fonts in index.html) */
+  --font: "Libertinus Mono", ui-monospace, Menlo, monospace;
+  /* Product name in the product view, in a medium weight */
+  --font-title: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* The dark grey at the top of the landing video and its still image.
      Safari shows it in the status bar strip above the page, so the strip
@@ -508,7 +509,7 @@ video::-webkit-media-controls-overlay-play-button {
 .product-title {
   margin: 0;
   font-family: var(--font-title);
-  font-weight: 400;
+  font-weight: 500; /* medium */
   font-size: 2.5rem;
   line-height: 1.1;
 }
