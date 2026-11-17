@@ -65,7 +65,7 @@
 
   /* How long the product view takes to slide up when it opens (and back
      down when it closes), in seconds */
-  --overlay-slide: 0.5s;
+  --overlay-slide: 0.35s;
 }
 
 /* Above the page (status bar, pull-down bounce): the landing's dark grey.
