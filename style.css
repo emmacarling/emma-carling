@@ -925,7 +925,7 @@ body.covered .contact {
     overflow: visible;
   }
   .thumb { width: 2.25rem; }
-  .overlay-info { order: 3; flex: none; height: auto; overflow: visible; padding: 1.25rem var(--text-inset) 1.5rem; }
+  .overlay-info { order: 3; flex: none; height: auto; overflow: visible; padding: 0.5rem var(--text-inset) 1.5rem; } /* top: space under the previews */
 
   /* Smaller buttons on mobile */
   .arrow,
