@@ -581,9 +581,20 @@ function renderSizes(sizing) {
 }
 
 function setOrderOpen(open) {
+  // Phones: the floating button (style.css) slides from where it floats down
+  // to its own place at the end of the unfolding form, and stays there
+  const from = orderButton.getBoundingClientRect().top;
   orderFields.classList.toggle('open', open);
   orderFields.inert = !open;
+  orderButton.classList.toggle('settled', open);
   orderButton.textContent = open ? 'Send request' : 'Order';
+  const shift = from - orderButton.getBoundingClientRect().top;
+  if (open && shift && orderButton.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    orderButton.animate(
+      [{ transform: 'translateY(' + shift + 'px)' }, { transform: 'none' }],
+      { duration: 500, easing: 'ease' } // as long as the form's unfolding (.fold)
+    );
+  }
 }
 
 // A fresh, folded form for this product

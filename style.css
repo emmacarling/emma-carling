@@ -66,6 +66,10 @@
   /* How long the product view takes to slide up when it opens (and back
      down when it closes), in seconds */
   --overlay-slide: 0.35s;
+
+  /* Phones: how far above the bottom of the screen the floating Order button
+     sits in the product view. Raise it if Safari's bar covers the button. */
+  --order-button-bottom: calc(var(--gap) + env(safe-area-inset-bottom, 0px));
 }
 
 /* Above the page (status bar, pull-down bounce): the landing's dark grey.
@@ -939,6 +943,17 @@ body.covered .contact {
   .order-button {
     padding: 0.7rem;
     font-size: 0.6875rem;
+  }
+  /* Product view: the Order button floats at the bottom of the screen, above
+     Safari's bar, until you reach it. When pressed it slides down with the
+     unfolding form to its place at the end of the form, and stays there. */
+  .overlay-info .order-button {
+    position: sticky;
+    bottom: var(--order-button-bottom);
+    z-index: 2;
+  }
+  .overlay-info .order-button.settled {
+    position: static;
   }
 
   .option span {
