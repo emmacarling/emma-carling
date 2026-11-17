@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "name": "Rio skirt (test)",
+      "name": "RIO SKIRT(test)",
       "price": 1206,
       "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
       "sizing": "one",
@@ -11,7 +11,7 @@
       ]
     },
     {
-      "name": "Lova dress",
+      "name": "LOVA DRESS",
       "price": 1200,
       "material": "100% organic cotton",
       "sizing": "two",
@@ -22,7 +22,7 @@
       ]
     },
     {
-      "name": "Rose skirt",
+      "name": "ROSE SKIRT",
       "price": 1200,
       "material": "100% organic cotton",
       "sizing": "two",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "name": "Rose top",
+      "name": "ROSE TOP",
       "price": 1200,
       "material": "100% organic cotton",
       "sizing": "two",
@@ -42,7 +42,7 @@
       ]
     },
     {
-      "name": "Havana skirt",
+      "name": "Havana Skirt",
       "price": 1200,
       "material": "100% organic cotton",
       "sizing": "two",
