@@ -1,13 +1,13 @@
 {
   "products": [
     {
-      "name": "RIO SKIRT(test)",
-      "price": 1206,
+      "name": "RIO SKIRT",
+      "price": 6000,
       "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
       "sizing": "one",
       "images": [
-        "/img/dress1.jpeg",
-        "/img/dress2.jpeg"
+        "/images/uploads/img_3191.jpeg",
+        "/images/uploads/img_0628.jpeg"
       ]
     },
     {
