@@ -22,12 +22,13 @@
     },
     {
       "name": "ROSE SKIRT",
-      "price": 1200,
-      "material": "100% organic cotton",
+      "price": 3500,
+      "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
       "sizing": "two",
       "images": [
-        "/img/dress1.jpeg",
-        "/img/dress2.jpeg"
+        "/images/uploads/img_1314.jpeg",
+        "/images/uploads/img_1322.jpeg",
+        "/images/uploads/img_1316.jpeg"
       ]
     },
     {
