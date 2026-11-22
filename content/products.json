@@ -11,6 +11,16 @@
       ]
     },
     {
+      "name": "ROSE TOP",
+      "price": 4000,
+      "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
+      "sizing": "two",
+      "images": [
+        "/images/uploads/img_0361.jpeg",
+        "/images/uploads/img_0373.jpeg"
+      ]
+    },
+    {
       "name": "LOVA DRESS",
       "price": 7000,
       "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
@@ -18,6 +28,15 @@
       "images": [
         "/images/uploads/img_1290.jpeg",
         "/images/uploads/img_1300.jpeg"
+      ]
+    },
+    {
+      "name": "LYKKE DRESS",
+      "price": 8000,
+      "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
+      "sizing": "two",
+      "images": [
+        "/images/uploads/img_3903.jpeg"
       ]
     },
     {
@@ -29,25 +48,6 @@
         "/images/uploads/img_1314.jpeg",
         "/images/uploads/img_1322.jpeg",
         "/images/uploads/img_1316.jpeg"
-      ]
-    },
-    {
-      "name": "ROSE TOP",
-      "price": 4000,
-      "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
-      "sizing": "two",
-      "images": [
-        "/images/uploads/img_0361.jpeg",
-        "/images/uploads/img_0373.jpeg"
-      ]
-    },
-    {
-      "name": "LYKKE DRESS",
-      "price": 8000,
-      "material": "Lycra – 78% Recyceled polymid ECONYL, 22% extra long life elastan",
-      "sizing": "two",
-      "images": [
-        "/images/uploads/img_3903.jpeg"
       ]
     },
     {
