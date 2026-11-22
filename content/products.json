@@ -82,13 +82,19 @@
       ]
     },
     {
-      "name": "Rose skirt",
-      "price": 1200,
-      "material": "100% organic cotton",
+      "name": "TRANSPARENT SOCKS",
+      "price": 990,
+      "material": "80%Polyamid 20%Elastan",
       "sizing": "two",
       "images": [
-        "/img/dress1.jpeg",
-        "/img/dress2.jpeg"
+        "/images/uploads/img_1324.jpeg",
+        "/images/uploads/img_1325.jpeg"
+      ],
+      "colours": [
+        "Light blue",
+        "Pink",
+        "Off-white",
+        "Burgundy"
       ]
     },
     {
